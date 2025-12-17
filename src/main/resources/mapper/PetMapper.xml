@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.xaut.mapper.PetMapper">
+    <resultMap id="BaseResultMap" type="cn.edu.xaut.domain.entity.Pet">
+        <id column="pet_id" property="petId" />
+        <result column="user_id" property="userId" />
+        <result column="pet_name" property="petName" />
+        <result column="breed" property="breed" />
+        <result column="gender" property="gender" />
+        <result column="birth_date" property="birthDate" />
+        <result column="vaccine_status" property="vaccineStatus" />
+        <result column="remarks" property="remarks" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        pet_id, user_id, pet_name, breed, gender, birth_date, vaccine_status, remarks
+    </sql>
+    
+    <select id="selectPetById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM pet
+        WHERE pet_id = #{petId}
+    </select>
+    
+    <select id="selectPetsByUserId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM pet
+        WHERE user_id = #{userId}
+    </select>
+    
+    <select id="selectAllPets" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM pet
+    </select>
+    
+    <insert id="insertPet" parameterType="cn.edu.xaut.domain.entity.Pet">
+        INSERT INTO pet (
+            user_id, pet_name, breed, gender, birth_date, vaccine_status, remarks
+        ) VALUES (
+            #{userId}, #{petName}, #{breed}, #{gender}, #{birthDate}, #{vaccineStatus}, #{remarks}
+        )
+    </insert>
+    
+    <update id="updatePet" parameterType="cn.edu.xaut.domain.entity.Pet">
+        UPDATE pet
+        SET
+        pet_name = #{petName},
+        breed = #{breed},
+        gender = #{gender},
+        birth_date = #{birthDate},
+        vaccine_status = #{vaccineStatus},
+        remarks = #{remarks}
+        WHERE pet_id = #{petId}
+    </update>
+    
+    <delete id="deletePet">
+        DELETE FROM pet
+        WHERE pet_id = #{petId}
+    </delete>
+</mapper>

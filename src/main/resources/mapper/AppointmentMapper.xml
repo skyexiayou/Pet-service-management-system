@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.xaut.mapper.AppointmentMapper">
+    <resultMap id="BaseResultMap" type="cn.edu.xaut.domain.entity.Appointment">
+        <id column="appt_id" property="apptId" />
+        <result column="user_id" property="userId" />
+        <result column="pet_id" property="petId" />
+        <result column="store_id" property="storeId" />
+        <result column="emp_id" property="empId" />
+        <result column="appt_time" property="apptTime" />
+        <result column="appt_status" property="status" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        appt_id, user_id, pet_id, store_id, emp_id, appt_time, appt_status, create_time
+    </sql>
+    
+    <select id="selectAppointmentById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM appointment
+        WHERE appt_id = #{apptId}
+    </select>
+    
+    <select id="selectAppointmentsByUserId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM appointment
+        WHERE user_id = #{userId}
+        ORDER BY appt_time DESC
+    </select>
+    
+    <select id="selectAppointmentsByStoreId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM appointment
+        WHERE store_id = #{storeId}
+        ORDER BY appt_time DESC
+    </select>
+    
+    <select id="selectAppointmentsByStatus" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM appointment
+        WHERE appt_status = #{status}
+        ORDER BY appt_time DESC
+    </select>
+    
+    <select id="selectAppointmentsByServiceTime" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM appointment
+        WHERE DATE(appt_time) = #{serviceTime}
+        ORDER BY appt_time ASC
+    </select>
+    
+    <select id="selectAppointmentsByDateRange" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM appointment
+        WHERE appt_time BETWEEN #{startTime} AND #{endTime}
+        ORDER BY appt_time ASC
+    </select>
+    
+    <select id="selectAllAppointments" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM appointment
+        ORDER BY appt_time DESC
+    </select>
+    
+    <insert id="insertAppointment" parameterType="cn.edu.xaut.domain.entity.Appointment">
+        INSERT INTO appointment (
+            user_id, pet_id, store_id, emp_id, appt_time, appt_status, create_time
+        ) VALUES (
+            #{userId}, #{petId}, #{storeId}, #{empId}, #{apptTime}, #{status}, #{createTime}
+        )
+    </insert>
+    
+    <update id="updateAppointment" parameterType="cn.edu.xaut.domain.entity.Appointment">
+        UPDATE appointment
+        SET
+        pet_id = #{petId},
+        store_id = #{storeId},
+        emp_id = #{empId},
+        appt_time = #{apptTime},
+        appt_status = #{status}
+        WHERE appt_id = #{apptId}
+    </update>
+    
+    <update id="updateAppointmentStatus" parameterType="java.lang.Integer">
+        UPDATE appointment
+        SET appt_status = #{status}
+        WHERE appt_id = #{apptId}
+    </update>
+    
+    <delete id="deleteAppointment">
+        DELETE FROM appointment
+        WHERE appt_id = #{apptId}
+    </delete>
+</mapper>
