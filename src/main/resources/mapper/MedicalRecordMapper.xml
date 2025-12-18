@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.xaut.mapper.MedicalRecordMapper">
+
+    <select id="selectMedicalServicesByUserId" resultType="cn.edu.xaut.domain.vo.medical.MedicalServiceVO">
+        SELECT
+            mr.MedicalID as medicalId,
+            am.ApptID as apptId,
+            mr.PetID as petId,
+            p.PetName as petName,
+            mr.MedicalTime as medicalTime,
+            mr.Diagnosis as diagnosis,
+            mr.MedicalFee as medicalFee,
+            e.EmpName as empName,
+            s.StoreName as storeName
+        FROM medicalRecord mr
+        LEFT JOIN pet p ON mr.PetID = p.PetID
+        LEFT JOIN employee e ON mr.EmpID = e.EmpID
+        LEFT JOIN store s ON mr.StoreID = s.StoreID
+        LEFT JOIN apptMedical am ON mr.MedicalID = am.MedicalID
+        WHERE p.UserID = #{userId}
+        ORDER BY mr.MedicalTime DESC
+    </select>
+
+</mapper>

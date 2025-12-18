@@ -1,15 +1,22 @@
 package cn.edu.xaut.controller;
 
-import cn.edu.xaut.domain.dto.AppointmentDTO;
-import cn.edu.xaut.domain.entity.Appointment;
+import cn.edu.xaut.domain.dto.appointment.AppointmentCreateDTO;
+import cn.edu.xaut.domain.vo.ResponseVO;
+import cn.edu.xaut.domain.vo.appointment.AppointmentDetailVO;
+import cn.edu.xaut.domain.vo.appointment.AppointmentVO;
 import cn.edu.xaut.service.appointment.AppointmentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 预约管理Controller
+ */
 @RestController
 @RequestMapping("/api/appointments")
 @Api(tags = "预约管理")
@@ -18,51 +25,35 @@ public class AppointmentController {
     @Autowired
     private AppointmentService appointmentService;
 
-    @ApiOperation("获取所有预约")
-    @GetMapping
-    public List<Appointment> getAllAppointments() {
-        return appointmentService.getAllAppointments();
-    }
-
-    @ApiOperation("根据ID获取预约")
-    @GetMapping("/{id}")
-    public Appointment getAppointmentById(@PathVariable("id") Integer apptId) {
-        return appointmentService.getAppointmentById(apptId);
-    }
-
-    @ApiOperation("根据用户ID获取预约")
-    @GetMapping("/user/{userId}")
-    public List<Appointment> getAppointmentsByUserId(@PathVariable("userId") Integer userId) {
-        return appointmentService.getAppointmentsByUserId(userId);
-    }
-
-    @ApiOperation("根据状态获取预约")
-    @GetMapping("/status/{status}")
-    public List<Appointment> getAppointmentsByStatus(@PathVariable("status") String status) {
-        return appointmentService.getAppointmentsByStatus(status);
-    }
-
-    @ApiOperation("创建预约")
+    @ApiOperation("提交多服务组合预约")
     @PostMapping
-    public Integer createAppointment(@RequestBody AppointmentDTO appointmentDTO) {
-        return appointmentService.createAppointment(appointmentDTO);
+    public ResponseVO<Integer> createAppointment(
+            @Validated @RequestBody AppointmentCreateDTO dto) {
+        Integer apptId = appointmentService.createAppointment(dto);
+        return ResponseVO.success(apptId);
     }
 
-    @ApiOperation("更新预约")
-    @PutMapping("/{id}")
-    public Integer updateAppointment(@PathVariable("id") Integer apptId, @RequestBody AppointmentDTO appointmentDTO) {
-        return appointmentService.updateAppointment(apptId, appointmentDTO);
+    @ApiOperation("查询用户的预约列表")
+    @GetMapping("/user/{userId}")
+    public ResponseVO<List<AppointmentVO>> getAppointmentsByUserId(
+            @ApiParam(value = "用户ID", required = true) @PathVariable Integer userId) {
+        List<AppointmentVO> appointments = appointmentService.getAppointmentsByUserId(userId);
+        return ResponseVO.success(appointments);
+    }
+
+    @ApiOperation("查询预约详情（含服务明细）")
+    @GetMapping("/{apptId}")
+    public ResponseVO<AppointmentDetailVO> getAppointmentDetail(
+            @ApiParam(value = "预约ID", required = true) @PathVariable Integer apptId) {
+        AppointmentDetailVO detail = appointmentService.getAppointmentDetail(apptId);
+        return ResponseVO.success(detail);
     }
 
     @ApiOperation("取消预约")
-    @PutMapping("/{id}/cancel")
-    public Integer cancelAppointment(@PathVariable("id") Integer apptId) {
-        return appointmentService.cancelAppointment(apptId);
-    }
-
-    @ApiOperation("删除预约")
-    @DeleteMapping("/{id}")
-    public Integer deleteAppointment(@PathVariable("id") Integer apptId) {
-        return appointmentService.deleteAppointment(apptId);
+    @PutMapping("/{apptId}/cancel")
+    public ResponseVO<Void> cancelAppointment(
+            @ApiParam(value = "预约ID", required = true) @PathVariable Integer apptId) {
+        appointmentService.cancelAppointment(apptId);
+        return ResponseVO.success(null);
     }
 }

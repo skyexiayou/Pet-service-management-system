@@ -1,25 +1,37 @@
 spring:
   application:
     name: PetServiceManagement
-
+  
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/pet_service_management?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&useSSL=false
     username: root
     password: 123456
 
+server:
+  port: 8080
 
 mybatis:
-
   mapper-locations: classpath:mapper/**/*.xml
-
   type-aliases-package: cn.edu.xaut.domain.entity
-
   configuration:
     map-underscore-to-camel-case: true
-
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 knife4j:
   enable: true
   setting:
     language: zh_cn
+    enableSwaggerModels: true
+    enableDocumentManage: true
+    enableVersion: true
+  document:
+    title: 宠物服务管理系统API
+    description: 宠物服务管理系统的OpenAPI接口文档
+    version: 1.0.0
+    license: Apache License 2.0
+    licenseUrl: http://www.apache.org/licenses/LICENSE-2.0
+    contact:
+      name: 数据库冲冲冲团队
+      url: http://localhost:8081
+      email: api@example.com

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.xaut.mapper.ApptMedicalMapper">
+
+    <select id="selectMedicalDetailByApptId" resultType="cn.edu.xaut.domain.vo.appointment.MedicalDetailVO">
+        SELECT
+            mr.MedicalID as medicalId,
+            mr.MedicalTime as medicalTime,
+            mr.Diagnosis as diagnosis,
+            mr.Medication as medication,
+            mr.MedicalFee as medicalFee,
+            mr.FollowUpAdvice as followUpAdvice
+        FROM apptMedical am
+        LEFT JOIN medicalRecord mr ON am.MedicalID = mr.MedicalID
+        WHERE am.ApptID = #{apptId}
+    </select>
+
+    <select id="selectMedicalIdByApptId" resultType="java.lang.Integer">
+        SELECT MedicalID
+        FROM apptMedical
+        WHERE ApptID = #{apptId}
+        LIMIT 1
+    </select>
+
+    <insert id="insertApptMedical">
+        INSERT INTO apptMedical (ApptID, MedicalID)
+        VALUES (#{apptId}, #{medicalId})
+    </insert>
+
+</mapper>

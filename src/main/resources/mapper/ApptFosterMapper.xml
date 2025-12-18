@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.xaut.mapper.ApptFosterMapper">
+
+    <select id="selectFosterDetailByApptId" resultType="cn.edu.xaut.domain.vo.appointment.FosterDetailVO">
+        SELECT
+            fr.FosterID as fosterId,
+            fr.StartDate as startDate,
+            fr.EndDate as endDate,
+            fr.FosterFee as fosterFee,
+            fr.FosterStatus as fosterStatus,
+            fr.FosterRemarks as fosterRemarks,
+            fr.DailyStatus as dailyStatus
+        FROM apptFoster af
+        LEFT JOIN fosterRecord fr ON af.FosterID = fr.FosterID
+        WHERE af.ApptID = #{apptId}
+    </select>
+
+</mapper>

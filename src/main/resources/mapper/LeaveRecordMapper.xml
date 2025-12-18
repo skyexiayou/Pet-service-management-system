@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.xaut.mapper.LeaveRecordMapper">
+
+    <select id="selectLeaveRecordsByEmpIdAndTime" resultType="cn.edu.xaut.domain.entity.leaverecord.LeaveRecordDO">
+        SELECT
+            LeaveID as leaveId,
+            EmpID as empId,
+            StoreID as storeId,
+            LeaveType as leaveType,
+            StartTime as startTime,
+            EndTime as endTime,
+            ApplyTime as applyTime,
+            ApproverID as approverId,
+            ApproveStatus as approveStatus,
+            ApproveTime as approveTime,
+            LeaveReason as leaveReason
+        FROM leaveRecord
+        WHERE EmpID = #{empId}
+          AND (ApproveStatus = 'approved' OR ApproveStatus = '1')
+          AND (
+            (StartTime &lt;= #{startTime} AND EndTime &gt;= #{startTime})
+            OR (StartTime &lt;= #{endTime} AND EndTime &gt;= #{endTime})
+            OR (StartTime &gt;= #{startTime} AND EndTime &lt;= #{endTime})
+          )
+    </select>
+
+</mapper>

@@ -1,63 +1,74 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.xaut.mapper.PetMapper">
-    <resultMap id="BaseResultMap" type="cn.edu.xaut.domain.entity.Pet">
-        <id column="pet_id" property="petId" />
-        <result column="user_id" property="userId" />
-        <result column="pet_name" property="petName" />
-        <result column="breed" property="breed" />
-        <result column="gender" property="gender" />
-        <result column="birth_date" property="birthDate" />
-        <result column="vaccine_status" property="vaccineStatus" />
-        <result column="remarks" property="remarks" />
-    </resultMap>
-    
-    <sql id="Base_Column_List">
-        pet_id, user_id, pet_name, breed, gender, birth_date, vaccine_status, remarks
-    </sql>
-    
-    <select id="selectPetById" resultMap="BaseResultMap">
+    <!-- Select all service records by pet ID -->
+    <select id="selectPetServiceRecords" parameterType="java.lang.Integer" resultType="java.util.Map">
         SELECT
-        <include refid="Base_Column_List" />
-        FROM pet
-        WHERE pet_id = #{petId}
-    </select>
-    
-    <select id="selectPetsByUserId" resultMap="BaseResultMap">
+            appt.ApptID AS appointmentId,
+            appt.ApptTime AS serviceDate,
+            appt.ApptTime AS serviceTime,
+            appt.ApptStatus AS status,
+            'Beauty' AS serviceType,
+            b.BeautyName AS serviceName,
+            b.Price AS price
+        FROM
+            appointment appt
+        LEFT JOIN apptbeauty ab ON appt.ApptID = ab.ApptID
+        LEFT JOIN beauty b ON ab.BeautyID = b.BeautyID
+        WHERE
+            appt.PetID = #{petId}
+        
+        UNION ALL
+        
         SELECT
-        <include refid="Base_Column_List" />
-        FROM pet
-        WHERE user_id = #{userId}
-    </select>
-    
-    <select id="selectAllPets" resultMap="BaseResultMap">
+            appt.ApptID AS appointmentId,
+            mr.MedicalTime AS serviceDate,
+            mr.MedicalTime AS serviceTime,
+            appt.ApptStatus AS status,
+            'Medical' AS serviceType,
+            'Medical Service' AS serviceName,
+            mr.MedicalFee AS price
+        FROM
+            appointment appt
+        LEFT JOIN apptMedical am ON appt.ApptID = am.ApptID
+        LEFT JOIN medicalRecord mr ON am.MedicalID = mr.MedicalID
+        WHERE
+            appt.PetID = #{petId}
+        
+        UNION ALL
+        
         SELECT
-        <include refid="Base_Column_List" />
-        FROM pet
+            appt.ApptID AS appointmentId,
+            fr.StartDate AS serviceDate,
+            fr.StartDate AS serviceTime,
+            appt.ApptStatus AS status,
+            'Boarding' AS serviceType,
+            'Boarding Service' AS serviceName,
+            fr.FosterFee AS price
+        FROM
+            appointment appt
+        LEFT JOIN apptFoster af ON appt.ApptID = af.ApptID
+        LEFT JOIN fosterRecord fr ON af.FosterID = fr.FosterID
+        WHERE
+            appt.PetID = #{petId}
+        
+        ORDER BY
+            serviceDate DESC, serviceTime DESC
     </select>
-    
-    <insert id="insertPet" parameterType="cn.edu.xaut.domain.entity.Pet">
-        INSERT INTO pet (
-            user_id, pet_name, breed, gender, birth_date, vaccine_status, remarks
-        ) VALUES (
-            #{userId}, #{petName}, #{breed}, #{gender}, #{birthDate}, #{vaccineStatus}, #{remarks}
-        )
-    </insert>
-    
-    <update id="updatePet" parameterType="cn.edu.xaut.domain.entity.Pet">
-        UPDATE pet
-        SET
-        pet_name = #{petName},
-        breed = #{breed},
-        gender = #{gender},
-        birth_date = #{birthDate},
-        vaccine_status = #{vaccineStatus},
-        remarks = #{remarks}
-        WHERE pet_id = #{petId}
-    </update>
-    
-    <delete id="deletePet">
-        DELETE FROM pet
-        WHERE pet_id = #{petId}
-    </delete>
+
+    <!-- Select pets by user ID -->
+    <select id="selectPetsByUserId" parameterType="java.lang.Integer" resultType="cn.edu.xaut.domain.entity.pet.PetDO">
+        SELECT
+            PetID as petId,
+            UserID as userId,
+            PetName as petName,
+            Breed as breed,
+            Gender as gender,
+            BirthDate as birthDate,
+            VaccineStatus as vaccineStatus,
+            Remarks as remarks
+        FROM pet
+        WHERE UserID = #{userId}
+        ORDER BY PetID
+    </select>
 </mapper>

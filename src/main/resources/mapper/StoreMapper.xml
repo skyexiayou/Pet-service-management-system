@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.xaut.mapper.StoreMapper">
+    <!-- Select all stores with pagination -->
+    <select id="selectAllStores" resultType="cn.edu.xaut.domain.entity.store.StoreDO">
+        SELECT
+            s.*,
+            c.CityName
+        FROM
+            store s
+        LEFT JOIN city c ON s.CityID = c.CityID
+        ORDER BY
+            s.StoreID DESC
+    </select>
+    
+    <!-- Select stores by city ID with pagination -->
+    <select id="selectStoresByCityId" parameterType="java.lang.Integer" resultType="cn.edu.xaut.domain.entity.store.StoreDO">
+        SELECT
+            s.*,
+            c.CityName
+        FROM
+            store s
+        LEFT JOIN city c ON s.CityID = c.CityID
+        WHERE
+            s.CityID = #{cityId}
+        ORDER BY
+            s.StoreID DESC
+    </select>
+    
+    <!-- Select store details by ID -->
+    <select id="selectStoreById" parameterType="java.lang.Integer" resultType="cn.edu.xaut.domain.entity.store.StoreDO">
+        SELECT
+            s.*,
+            c.CityName
+        FROM
+            store s
+        LEFT JOIN city c ON s.CityID = c.CityID
+        WHERE
+            s.StoreID = #{storeId}
+    </select>
+</mapper>

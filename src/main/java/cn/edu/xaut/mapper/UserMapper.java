@@ -1,17 +1,17 @@
 package cn.edu.xaut.mapper;
 
-import cn.edu.xaut.domain.entity.User;
+import cn.edu.xaut.domain.entity.user.UserDO;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-
+/**
+ * 用户Mapper接口
+ */
 @Mapper
-public interface UserMapper {
-    User selectUserById(@Param("userId") Integer userId);
-    User selectUserByPhone(@Param("phone") String phone);
-    List<User> selectAllUsers();
-    int insertUser(User user);
-    int updateUser(User user);
-    int deleteUser(@Param("userId") Integer userId);
+public interface UserMapper extends BaseMapper<UserDO> {
+    UserDO selectUserByPhone(@Param("phone") String phone);
+    UserDO selectUserByEmail(@Param("email") String email);
+    List<UserDO> selectAllUsers();
 }

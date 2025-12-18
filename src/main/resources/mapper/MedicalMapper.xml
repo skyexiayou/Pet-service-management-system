@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.xaut.mapper.MedicalMapper">
+    <!-- Select medical record by ID -->
+    <select id="selectMedicalById" parameterType="java.lang.Integer" resultType="cn.edu.xaut.domain.entity.medical.MedicalDO">
+        SELECT * FROM medicalRecord WHERE MedicalID = #{medicalId}
+    </select>
+
+    <!-- Select all medical records -->
+    <select id="selectAllMedicals" resultType="cn.edu.xaut.domain.entity.medical.MedicalDO">
+        SELECT * FROM medicalRecord ORDER BY MedicalID DESC
+    </select>
+</mapper>

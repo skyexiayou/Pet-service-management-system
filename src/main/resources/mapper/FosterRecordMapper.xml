@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.xaut.mapper.FosterRecordMapper">
+
+    <select id="selectFosterServicesByUserId" resultType="cn.edu.xaut.domain.vo.foster.FosterServiceVO">
+        SELECT
+            fr.FosterID as fosterId,
+            af.ApptID as apptId,
+            fr.PetID as petId,
+            p.PetName as petName,
+            fr.StartDate as startDate,
+            fr.EndDate as endDate,
+            fr.FosterFee as fosterFee,
+            fr.FosterStatus as fosterStatus,
+            s.StoreName as storeName
+        FROM fosterRecord fr
+        LEFT JOIN pet p ON fr.PetID = p.PetID
+        LEFT JOIN store s ON fr.StoreID = s.StoreID
+        LEFT JOIN apptFoster af ON fr.FosterID = af.FosterID
+        WHERE p.UserID = #{userId}
+        ORDER BY fr.StartDate DESC
+    </select>
+
+</mapper>

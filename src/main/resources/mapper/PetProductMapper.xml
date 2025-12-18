@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.xaut.mapper.PetProductMapper">
+    <!-- Select all pet products with pagination -->
+    <select id="selectProducts" resultType="cn.edu.xaut.domain.entity.petproduct.PetProductDO">
+        SELECT
+            pp.*
+        FROM
+            petProduct pp
+        ORDER BY
+            pp.ProductID DESC
+    </select>
+    
+    <!-- Select pet products by type with pagination -->
+    <select id="selectProductsByType" parameterType="java.lang.String" resultType="cn.edu.xaut.domain.entity.petproduct.PetProductDO">
+        SELECT
+            pp.*
+        FROM
+            petProduct pp
+        WHERE
+            pp.ProductType = #{productType}
+        ORDER BY
+            pp.ProductID DESC
+    </select>
+    
+    <!-- Select pet products by store ID with pagination -->
+    <select id="selectProductsByStoreId" parameterType="java.lang.Integer" resultType="cn.edu.xaut.domain.entity.petproduct.PetProductDO">
+        SELECT
+            pp.*
+        FROM
+            petProduct pp
+        JOIN petProductStore pps ON pp.ProductID = pps.ProductID
+        WHERE
+            pps.StoreID = #{storeId}
+        ORDER BY
+            pp.ProductID DESC
+    </select>
+    
+    <!-- Select all pet products -->
+    <select id="selectAllProducts" resultType="cn.edu.xaut.domain.entity.petproduct.PetProductDO">
+        SELECT
+            *
+        FROM
+            petProduct
+        ORDER BY
+            ProductID DESC
+    </select>
+    
+    <!-- Select pet product by ID -->
+    <select id="selectProductById" parameterType="java.lang.Integer" resultType="cn.edu.xaut.domain.entity.petproduct.PetProductDO">
+        SELECT
+            *
+        FROM
+            petProduct
+        WHERE
+            ProductID = #{productId}
+    </select>
+    
+    <!-- Select pet products by type without pagination -->
+    <select id="selectAllProductsByType" parameterType="java.lang.String" resultType="cn.edu.xaut.domain.entity.petproduct.PetProductDO">
+        SELECT
+            *
+        FROM
+            petProduct
+        WHERE
+            ProductType = #{productType}
+        ORDER BY
+            ProductID DESC
+    </select>
+</mapper>

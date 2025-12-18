@@ -1,33 +1,33 @@
 package cn.edu.xaut.mapper;
 
-import cn.edu.xaut.domain.entity.Appointment;
+import cn.edu.xaut.domain.entity.appointment.AppointmentDO;
+import cn.edu.xaut.domain.vo.appointment.AppointmentDetailVO;
+import cn.edu.xaut.domain.vo.appointment.AppointmentVO;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.Date;
 import java.util.List;
 
+/**
+ * 预约Mapper接口
+ */
 @Mapper
-public interface AppointmentMapper {
-    Appointment selectAppointmentById(@Param("apptId") Integer apptId);
-    
-    List<Appointment> selectAppointmentsByUserId(@Param("userId") Integer userId);
-    
-    List<Appointment> selectAppointmentsByStoreId(@Param("storeId") Integer storeId);
-    
-    List<Appointment> selectAppointmentsByStatus(@Param("status") String status);
-    
-    List<Appointment> selectAppointmentsByServiceTime(@Param("serviceTime") String serviceTime);
-    
-    List<Appointment> selectAppointmentsByDateRange(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
-    
-    List<Appointment> selectAllAppointments();
-    
-    int insertAppointment(Appointment appointment);
-    
-    int updateAppointment(Appointment appointment);
-    
-    int updateAppointmentStatus(@Param("apptId") Integer apptId, @Param("status") String status);
-    
-    int deleteAppointment(@Param("apptId") Integer apptId);
+public interface AppointmentMapper extends BaseMapper<AppointmentDO> {
+
+    /**
+     * 查询用户的预约列表
+     *
+     * @param userId 用户ID
+     * @return 预约列表
+     */
+    List<AppointmentVO> selectAppointmentsByUserId(@Param("userId") Integer userId);
+
+    /**
+     * 查询预约详情（含门店、员工信息）
+     *
+     * @param apptId 预约ID
+     * @return 预约详情
+     */
+    AppointmentDetailVO selectAppointmentDetail(@Param("apptId") Integer apptId);
 }
