@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.xaut.mapper.OrderProductMapper">
+
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO orderProduct (OrderID, RelID, Quantity, ActualPrice, Subtotal, CreateTime)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.orderId}, #{item.relId}, #{item.quantity}, #{item.actualPrice}, #{item.subtotal}, #{item.createTime})
+        </foreach>
+    </insert>
+
+
+    <select id="selectProductDetailsByOrderId" resultType="cn.edu.xaut.domain.vo.order.ProductDetailVO">
+        SELECT
+            pp.ProductName as productName,
+            pp.ProductType as productType,
+            op.Quantity as quantity,
+            op.ActualPrice as actualPrice,
+            op.Subtotal as subtotal
+        FROM orderProduct op
+        LEFT JOIN petProductStore pps ON op.RelID = pps.RelID
+        LEFT JOIN petProduct pp ON pps.ProductID = pp.ProductID
+        WHERE op.OrderID = #{orderId}
+    </select>
+
+    <select id="selectByOrderId" resultType="java.util.Map">
+        SELECT
+            RelID as relId,
+            Quantity as quantity
+        FROM orderProduct
+        WHERE OrderID = #{orderId}
+    </select>
+
+</mapper>

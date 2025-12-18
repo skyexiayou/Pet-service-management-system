@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.xaut.mapper.AdminAppointmentMapper">
+
+    <select id="selectPendingAppointments" resultType="java.util.Map">
+        SELECT 
+            a.ApptID as apptId,
+            a.ApptTime as apptTime,
+            a.ApptStatus as apptStatus,
+            a.CreateTime as createTime,
+            p.PetName as petName,
+            u.UserName as userName,
+            u.Phone as userPhone
+        FROM appointment a
+        INNER JOIN pet p ON a.PetID = p.PetID
+        INNER JOIN `user` u ON a.UserID = u.UserID
+        WHERE a.StoreID = #{storeId}
+          AND a.ApptStatus = '������'
+        ORDER BY a.CreateTime DESC
+    </select>
+
+
+    <select id="selectMonthlyReport" resultType="cn.edu.xaut.domain.vo.admin.MonthlyReportVO">
+        SELECT 
+            StoreID as storeId,
+            StoreName as storeName,
+            StatMonth as statMonth,
+            NewUserCount as newUserCount,
+            TotalOrderCount as totalOrderCount,
+            BeautyOrderCount as beautyOrderCount,
+            FosterOrderCount as fosterOrderCount,
+            MedicalOrderCount as medicalOrderCount,
+            ProductSales as productSales,
+            BeautyRevenue as beautyRevenue,
+            FosterRevenue as fosterRevenue,
+            MedicalRevenue as medicalRevenue,
+            TotalRevenue as totalRevenue,
+            HotServiceType as hotServiceType
+        FROM v_store_monthly_report
+        WHERE 1=1
+        <if test="storeId != null">
+            AND StoreID = #{storeId}
+        </if>
+        <if test="statMonth != null and statMonth != ''">
+            AND StatMonth = #{statMonth}
+        </if>
+        ORDER BY StatMonth DESC
+    </select>
+
+
+    <select id="selectStoreOrders" resultType="java.util.Map">
+        SELECT 
+            o.OrderID as orderId,
+            o.ApptID as apptId,
+            o.TotalAmount as totalAmount,
+            o.PayStatus as payStatus,
+            o.PayMethod as payMethod,
+            o.PayTime as payTime,
+            o.OrderCreateTime as orderCreateTime,
+            u.UserName as userName,
+            u.Phone as userPhone,
+            p.PetName as petName
+        FROM `order` o
+        INNER JOIN appointment a ON o.ApptID = a.ApptID
+        INNER JOIN pet p ON a.PetID = p.PetID
+        INNER JOIN `user` u ON a.UserID = u.UserID
+        WHERE a.StoreID = #{storeId}
+        ORDER BY o.OrderCreateTime DESC
+    </select>
+
+</mapper>

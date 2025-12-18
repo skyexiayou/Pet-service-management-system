@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.xaut.mapper.PetProductStoreMapper">
+
+
+    <update id="decreaseStock">
+        UPDATE petProductStore
+        SET StoreStock = StoreStock - #{quantity}
+        WHERE RelID = #{relId}
+        AND StoreStock >= #{quantity}
+    </update>
+
+
+    <select id="selectByRelIdForUpdate" resultType="cn.edu.xaut.domain.entity.petproductstore.PetProductStoreDO">
+        SELECT *
+        FROM petProductStore
+        WHERE RelID = #{relId}
+        FOR UPDATE
+    </select>
+
+    <update id="increaseStock">
+        UPDATE petProductStore
+        SET StoreStock = StoreStock + #{quantity},
+            ShelfStatus = CASE
+                WHEN StoreStock + #{quantity} > 0 AND ShelfStatus = '缺货' THEN '在售'
+                ELSE ShelfStatus
+            END
+        WHERE RelID = #{relId}
+    </update>
+
+</mapper>

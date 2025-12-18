@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.xaut.mapper.OrderMapper">
+
+    <select id="selectOrdersByUserId" resultType="cn.edu.xaut.domain.vo.order.OrderVO">
+        SELECT
+            o.OrderID as orderId,
+            o.ApptID as apptId,
+            o.TotalAmount as totalAmount,
+            o.PayStatus as payStatus,
+            o.PayMethod as payMethod,
+            o.PayTime as payTime,
+            o.OrderCreateTime as orderCreateTime
+        FROM `order` o
+        LEFT JOIN appointment a ON o.ApptID = a.ApptID
+        LEFT JOIN pet p ON a.PetID = p.PetID
+        WHERE (p.UserID = #{userId} OR o.ApptID IS NULL)
+        ORDER BY o.OrderCreateTime DESC
+    </select>
+
+    <select id="selectOrderDetail" resultType="cn.edu.xaut.domain.vo.order.OrderDetailVO">
+        SELECT
+            o.OrderID as orderId,
+            o.ApptID as apptId,
+            o.TotalAmount as totalAmount,
+            o.PayStatus as payStatus,
+            o.PayMethod as payMethod,
+            o.PayTime as payTime,
+            o.OrderCreateTime as orderCreateTime
+        FROM `order` o
+        WHERE o.OrderID = #{orderId}
+    </select>
+
+    <select id="calculateServiceFees" resultType="map">
+        SELECT
+            COALESCE(SUM(b.Price), 0) as beautyFee,
+            COALESCE(MAX(fr.FosterFee), 0) as fosterFee,
+            COALESCE(MAX(mr.MedicalFee), 0) as medicalFee
+        FROM appointment a
+        LEFT JOIN apptBeauty ab ON a.ApptID = ab.ApptID
+        LEFT JOIN beauty b ON ab.BeautyID = b.BeautyID
+        LEFT JOIN apptFoster af ON a.ApptID = af.ApptID
+        LEFT JOIN fosterRecord fr ON af.FosterID = fr.FosterID
+        LEFT JOIN apptMedical am ON a.ApptID = am.ApptID
+        LEFT JOIN medicalRecord mr ON am.MedicalID = mr.MedicalID
+        WHERE a.ApptID = #{apptId}
+        GROUP BY a.ApptID
+    </select>
+
+</mapper>

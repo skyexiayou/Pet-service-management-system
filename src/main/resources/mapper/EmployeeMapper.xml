@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.xaut.mapper.EmployeeMapper">
+
+    <resultMap id="BaseResultMap" type="cn.edu.xaut.domain.entity.employee.EmployeeDO">
+        <id column="EmpID" property="empId" />
+        <result column="StoreID" property="storeId" />
+        <result column="EmpName" property="empName" />
+        <result column="Position" property="position" />
+        <result column="EmpPhone" property="empPhone" />
+        <result column="EntryTime" property="entryTime" />
+        <result column="Salary" property="salary" />
+    </resultMap>
+
+    <select id="selectEmployeesByStoreId" resultMap="BaseResultMap">
+        SELECT EmpID, StoreID, EmpName, Position, EmpPhone, EntryTime, Salary
+        FROM employee
+        WHERE StoreID = #{storeId}
+        ORDER BY EmpID DESC
+    </select>
+
+    <select id="selectByPhone" resultMap="BaseResultMap">
+        SELECT EmpID, StoreID, EmpName, Position, EmpPhone, EntryTime, Salary
+        FROM employee
+        WHERE EmpPhone = #{empPhone}
+        LIMIT 1
+    </select>
+
+</mapper>
