@@ -15,7 +15,7 @@
         INNER JOIN pet p ON a.PetID = p.PetID
         INNER JOIN `user` u ON a.UserID = u.UserID
         WHERE a.StoreID = #{storeId}
-          AND a.ApptStatus = '������'
+          AND a.ApptStatus = '待服务'
         ORDER BY a.CreateTime DESC
     </select>
 

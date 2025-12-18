@@ -23,6 +23,16 @@ public class BusinessException extends RuntimeException {
         return code;
     }
 
+    // 认证相关错误码
+    public static final int ACCOUNT_EXISTS = 11;
+    public static final int PHONE_EXISTS = 12;
+    public static final int EMAIL_EXISTS = 13;
+    public static final int CAPTCHA_NOT_FOUND = 4;
+    public static final int CAPTCHA_INVALID = 5;
+    public static final int AUTH_FAILED = 7;
+    public static final int USER_BANNED = 8;
+
+    // 业务错误消息常量
     public static final String APPT_TIME_NOT_IN_BUSINESS_HOURS = "Appointment time is not within business hours";
     public static final String EMPLOYEE_ON_LEAVE = "Employee is on leave during appointment time";
     public static final String TIME_SLOT_CONFLICT = "Time slot is already booked";

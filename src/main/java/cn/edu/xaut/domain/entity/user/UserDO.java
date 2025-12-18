@@ -28,6 +28,11 @@ public class UserDO implements Serializable {
     @ApiModelProperty(value = "用户ID", dataType = "Integer", example = "1")
     private Integer userId;
 
+    /** 账号 */
+    @TableField("Account")
+    @ApiModelProperty(value = "账号", dataType = "String", example = "C123456")
+    private String account;
+
     /** 用户名 */
     @TableField("UserName")
     @ApiModelProperty(value = "用户名", dataType = "String", example = "张三")
@@ -52,4 +57,19 @@ public class UserDO implements Serializable {
     @TableField("Email")
     @ApiModelProperty(value = "邮箱", dataType = "String", example = "zhangsan@example.com")
     private String email;
+
+    /** 密码 */
+    @TableField("Password")
+    @ApiModelProperty(value = "密码（加密后）", dataType = "String", example = "$2a$10$...")
+    private String password;
+
+    /** 是否为管理员 */
+    @TableField("IsAdmin")
+    @ApiModelProperty(value = "是否为管理员：0-普通用户，1-管理员", dataType = "Integer", example = "0")
+    private Integer isAdmin;
+
+    /** 是否被封禁 */
+    @TableField("IsBanned")
+    @ApiModelProperty(value = "是否被封禁：0-正常，1-已封禁", dataType = "Integer", example = "0")
+    private Integer isBanned;
 }

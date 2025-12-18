@@ -13,5 +13,6 @@ import java.util.List;
 public interface UserMapper extends BaseMapper<UserDO> {
     UserDO selectUserByPhone(@Param("phone") String phone);
     UserDO selectUserByEmail(@Param("email") String email);
+    UserDO selectUserByAccount(@Param("account") String account);
     List<UserDO> selectAllUsers();
 }

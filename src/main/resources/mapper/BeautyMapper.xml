@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.xaut.mapper.BeautyMapper">
+    
+
+    <select id="selectBeautyById" parameterType="java.lang.Integer" resultType="cn.edu.xaut.domain.entity.beauty.BeautyDO">
+        SELECT 
+            BeautyID as beautyId,
+            BeautyName as beautyName,
+            BeautyType as beautyType,
+            Price as price,
+            Duration as duration,
+            BeautyRemarks as beautyRemarks
+        FROM beauty 
+        WHERE BeautyID = #{beautyId}
+    </select>
+
+
+    <select id="selectBeautiesByType" parameterType="java.lang.String" resultType="cn.edu.xaut.domain.entity.beauty.BeautyDO">
+        SELECT 
+            BeautyID as beautyId,
+            BeautyName as beautyName,
+            BeautyType as beautyType,
+            Price as price,
+            Duration as duration,
+            BeautyRemarks as beautyRemarks
+        FROM beauty 
+        WHERE BeautyType = #{beautyType}
+        ORDER BY BeautyID DESC
+    </select>
+
+
+    <select id="selectAllBeauties" resultType="cn.edu.xaut.domain.entity.beauty.BeautyDO">
+        SELECT 
+            BeautyID as beautyId,
+            BeautyName as beautyName,
+            BeautyType as beautyType,
+            Price as price,
+            Duration as duration,
+            BeautyRemarks as beautyRemarks
+        FROM beauty 
+        ORDER BY BeautyID DESC
+    </select>
+
+</mapper>

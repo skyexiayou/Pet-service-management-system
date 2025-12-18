@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(BusinessException.class)
     public ResponseVO<Void> handleBusinessException(BusinessException e) {
-        return ResponseVO.businessError(e.getMessage());
+        return ResponseVO.error(e.getCode(), e.getMessage());
     }
 
     /**

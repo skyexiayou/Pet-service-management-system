@@ -11,6 +11,10 @@
         SELECT * FROM user WHERE Email = #{email}
     </select>
 
+    <select id="selectUserByAccount" resultType="cn.edu.xaut.domain.entity.user.UserDO">
+        SELECT * FROM user WHERE Account = #{account}
+    </select>
+
     <select id="selectAllUsers" resultType="cn.edu.xaut.domain.entity.user.UserDO">
         SELECT * FROM user
     </select>

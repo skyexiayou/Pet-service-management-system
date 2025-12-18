@@ -1,8 +1,16 @@
--- 门店月报视图创建SQL
+-- 门店月报功能快速修复脚本
 -- 创建时间：2025-12-18
--- 说明：统计门店每月的运营数据，包括订单量、营收、新增客户等
+-- 说明：一键修复月报功能的所有问题
 
-CREATE OR REPLACE VIEW v_store_monthly_report AS
+-- ============================================
+-- 步骤1：删除旧视图
+-- ============================================
+DROP VIEW IF EXISTS v_store_monthly_report;
+
+-- ============================================
+-- 步骤2：创建新视图（修正版）
+-- ============================================
+CREATE VIEW v_store_monthly_report AS
 SELECT 
     s.StoreID,
     s.StoreName,
@@ -70,3 +78,42 @@ LEFT JOIN apptMedical am ON appt.ApptID = am.ApptID
 LEFT JOIN medicalRecord mr ON am.MedicalID = mr.MedicalID
 WHERE o.PayStatus = '已支付'
 GROUP BY s.StoreID, s.StoreName, DATE_FORMAT(o.OrderCreateTime, '%Y-%m');
+
+-- ============================================
+-- 步骤3：验证视图创建成功
+-- ============================================
+SELECT '视图创建成功！' as Status;
+SELECT '查看视图结构：' as Info;
+DESCRIBE v_store_monthly_report;
+
+-- ============================================
+-- 步骤4：查看现有数据
+-- ============================================
+SELECT '查看视图中的所有数据：' as Info;
+SELECT * FROM v_store_monthly_report ORDER BY StatMonth DESC LIMIT 10;
+
+-- ============================================
+-- 步骤5：检查是否需要插入测试数据
+-- ============================================
+SELECT '检查2025-12月是否有数据：' as Info;
+SELECT 
+    CASE 
+        WHEN COUNT(*) > 0 THEN '已有数据，无需插入测试数据'
+        ELSE '无数据，建议执行：SOURCE docs/月报测试数据-修正版.sql;'
+    END as Suggestion
+FROM v_store_monthly_report 
+WHERE StatMonth = '2025-12';
+
+-- ============================================
+-- 完成提示
+-- ============================================
+SELECT '========================================' as '';
+SELECT '月报功能修复完成！' as '';
+SELECT '========================================' as '';
+SELECT '下一步操作：' as '';
+SELECT '1. 如果没有测试数据，执行：SOURCE docs/月报测试数据-修正版.sql;' as '';
+SELECT '2. 启动项目：mvn spring-boot:run' as '';
+SELECT '3. 访问API文档：http://localhost:8081/doc.html' as '';
+SELECT '4. 测试月报接口：GET /api/admin/appointments/monthly-report' as '';
+SELECT '========================================' as '';
+
