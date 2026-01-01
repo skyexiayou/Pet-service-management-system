@@ -20,9 +20,9 @@ import lombok.NoArgsConstructor;
 @Schema(description = "用户注册DTO")
 public class UserRegisterDTO {
 
-    @Schema(description = "账号：首字符C + 6-16位数字/字母", required = true, example = "C123456")
+    @Schema(description = "账号：6-16位数字/字母", required = true, example = "user123")
     @NotBlank(message = "账号不能为空")
-    @Pattern(regexp = "^C[0-9a-zA-Z]{5,15}$", message = "账号格式错误：首字符C + 6-16位数字/字母")
+    @Pattern(regexp = "^[0-9a-zA-Z]{6,16}$", message = "账号格式错误：6-16位数字/字母")
     private String account;
 
     @Schema(description = "用户名", required = true, example = "张三")

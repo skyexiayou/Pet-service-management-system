@@ -33,5 +33,9 @@
         FROM orderProduct
         WHERE OrderID = #{orderId}
     </select>
+    
+    <select id="countByRelId" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM orderProduct WHERE RelID = #{relId}
+    </select>
 
 </mapper>

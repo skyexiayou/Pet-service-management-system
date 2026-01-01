@@ -3,9 +3,12 @@ package cn.edu.xaut.controller.admin;
 import cn.edu.xaut.domain.dto.admin.AppointmentReviewDTO;
 import cn.edu.xaut.domain.dto.admin.OrderRefundDTO;
 import cn.edu.xaut.domain.dto.admin.StatisticsQueryDTO;
+import cn.edu.xaut.domain.dto.appointment.AppointmentCreateDTO;
 import cn.edu.xaut.domain.vo.ResponseVO;
 import cn.edu.xaut.domain.vo.admin.MonthlyReportVO;
+import cn.edu.xaut.domain.vo.appointment.AppointmentVO;
 import cn.edu.xaut.service.admin.AdminAppointmentService;
+import cn.edu.xaut.service.appointment.AppointmentService;
 import cn.edu.xaut.utils.AdminAuthUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -30,6 +33,41 @@ public class AdminAppointmentController {
 
     private final AdminAppointmentService adminAppointmentService;
     private final AdminAuthUtil adminAuthUtil;
+    private final AppointmentService appointmentService;
+
+    @GetMapping
+    @ApiOperation(value = "查询所有预约列表", notes = "分页查询所有预约记录")
+    public ResponseVO<Page<Map<String, Object>>> getAllAppointments(
+            @ApiParam(value = "页码", example = "1") @RequestParam(defaultValue = "1") Integer pageNum,
+            @ApiParam(value = "每页大小", example = "10") @RequestParam(defaultValue = "10") Integer pageSize) {
+        Page<Map<String, Object>> appointments = adminAppointmentService.getAllAppointments(pageNum, pageSize);
+        return ResponseVO.success(appointments);
+    }
+
+    @PostMapping
+    @ApiOperation(value = "创建预约", notes = "管理员创建预约")
+    public ResponseVO<Integer> createAppointment(
+            @Valid @RequestBody AppointmentCreateDTO dto) {
+        Integer apptId = appointmentService.createAppointment(dto);
+        return ResponseVO.success(apptId);
+    }
+
+    @PutMapping("/{apptId}")
+    @ApiOperation(value = "更新预约", notes = "管理员更新预约信息")
+    public ResponseVO<Void> updateAppointment(
+            @ApiParam(value = "预约ID", required = true) @PathVariable Integer apptId,
+            @Valid @RequestBody Map<String, Object> updateData) {
+        adminAppointmentService.updateAppointment(apptId, updateData);
+        return ResponseVO.success(null);
+    }
+
+    @DeleteMapping("/{apptId}")
+    @ApiOperation(value = "删除预约", notes = "管理员删除预约")
+    public ResponseVO<Void> deleteAppointment(
+            @ApiParam(value = "预约ID", required = true) @PathVariable Integer apptId) {
+        adminAppointmentService.deleteAppointment(apptId);
+        return ResponseVO.success(null);
+    }
 
     @GetMapping("/pending")
     @ApiOperation(value = "查询待审核预约列表", notes = "查询当前门店所有待审核的预约")

@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -230,6 +231,90 @@ public class PetServiceImpl implements PetService {
         BeanUtils.copyProperties(petDTO, pet);
         pet.setPetId(petId);
         return petMapper.updateById(pet);
+    }
+
+    /**
+     * 搜索宠物列表
+     * 根据品种、性别、出生日期区间筛选宠物
+     *
+     * @param breed 宠物品种
+     * @param gender 宠物性别
+     * @param birthDateStart 出生日期开始
+     * @param birthDateEnd 出生日期结束
+     * @return 符合条件的宠物列表
+     */
+    @Override
+    public List<PetVO> searchPets(String petName, Integer petId, String breed, String gender, String birthDateStart, String birthDateEnd) {
+        // 首先获取所有宠物
+        List<PetDO> allPets = petMapper.selectList(null);
+        
+        // 本地过滤宠物列表
+        return allPets.stream()
+                .filter(pet -> {
+                    // 宠物ID过滤
+                    if (petId != null && pet.getPetId().intValue() != petId.intValue()) {
+                        return false;
+                    }
+                    
+                    // 宠物姓名过滤
+                    if (petName != null && !petName.isEmpty() && !pet.getPetName().contains(petName)) {
+                        return false;
+                    }
+                    
+                    // 品种过滤
+                    if (breed != null && !breed.isEmpty() && !pet.getBreed().contains(breed)) {
+                        return false;
+                    }
+                    
+                    // 性别过滤
+                    if (gender != null && !gender.isEmpty() && !pet.getGender().equals(gender)) {
+                        return false;
+                    }
+                    
+                    // 出生日期开始过滤
+                    if (birthDateStart != null && !birthDateStart.isEmpty() && pet.getBirthDate() != null) {
+                        try {
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+                            Date startDate = sdf.parse(birthDateStart);
+                            if (pet.getBirthDate().before(startDate)) {
+                                return false;
+                            }
+                        } catch (ParseException e) {
+                            // 解析失败则跳过该条件
+                            e.printStackTrace();
+                        }
+                    }
+                    
+                    // 出生日期结束过滤
+                    if (birthDateEnd != null && !birthDateEnd.isEmpty() && pet.getBirthDate() != null) {
+                        try {
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+                            Date endDate = sdf.parse(birthDateEnd);
+                            // 设置为当月最后一天
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(endDate);
+                            calendar.add(Calendar.MONTH, 1);
+                            calendar.set(Calendar.DAY_OF_MONTH, 0);
+                            endDate = calendar.getTime();
+                            
+                            if (pet.getBirthDate().after(endDate)) {
+                                return false;
+                            }
+                        } catch (ParseException e) {
+                            // 解析失败则跳过该条件
+                            e.printStackTrace();
+                        }
+                    }
+                    
+                    return true;
+                })
+                .map(this::convertToPetVO)
+                .collect(Collectors.toList());
+    }
+    
+    @Override
+    public Integer deletePet(Integer petId) {
+        return petMapper.deleteById(petId);
     }
 
     /**

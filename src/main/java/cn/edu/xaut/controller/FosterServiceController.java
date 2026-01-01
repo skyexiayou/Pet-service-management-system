@@ -1,5 +1,6 @@
 package cn.edu.xaut.controller;
 
+import cn.edu.xaut.domain.dto.foster.FosterAppointmentDTO;
 import cn.edu.xaut.domain.vo.ResponseVO;
 import cn.edu.xaut.domain.vo.foster.FosterServiceDetailVO;
 import cn.edu.xaut.domain.vo.foster.FosterServiceVO;
@@ -10,6 +11,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import java.util.List;
 
 /**
@@ -45,5 +47,21 @@ public class FosterServiceController {
             @ApiParam(value = "寄养ID", required = true) @PathVariable Integer fosterId) {
         fosterServiceService.confirmPickup(fosterId);
         return ResponseVO.success(null);
+    }
+
+    @ApiOperation("检查用户是否有注册宠物")
+    @GetMapping("/check-pets/{userId}")
+    public ResponseVO<Boolean> checkUserHasPets(
+            @ApiParam(value = "用户ID", required = true) @PathVariable Integer userId) {
+        boolean hasPets = fosterServiceService.checkUserHasPets(userId);
+        return ResponseVO.success(hasPets);
+    }
+
+    @ApiOperation("创建寄养预约")
+    @PostMapping("/appointment")
+    public ResponseVO<Integer> createFosterAppointment(
+            @ApiParam(value = "寄养预约数据", required = true) @Valid @RequestBody FosterAppointmentDTO dto) {
+        Integer fosterId = fosterServiceService.createFosterAppointment(dto);
+        return ResponseVO.success(fosterId);
     }
 }

@@ -16,6 +16,12 @@ import java.util.Map;
 public interface AdminAppointmentMapper extends BaseMapper<Map<String, Object>> {
 
     /**
+     * 查询所有预约列表
+     * @return 预约列表
+     */
+    List<Map<String, Object>> selectAllAppointments();
+
+    /**
      * 查询门店的待审核预约列表
      * @param storeId 门店ID
      * @return 预约列表

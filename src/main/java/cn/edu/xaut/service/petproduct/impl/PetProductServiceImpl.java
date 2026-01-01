@@ -7,6 +7,7 @@ package cn.edu.xaut.service.petproduct.impl;
 import cn.edu.xaut.domain.entity.petproduct.PetProductDO;
 import cn.edu.xaut.domain.vo.PageResultVO;
 import cn.edu.xaut.domain.vo.petproduct.PetProductVO;
+import cn.edu.xaut.domain.vo.petproduct.ProductWithStoreVO;
 import cn.edu.xaut.mapper.PetProductMapper;
 import cn.edu.xaut.service.petproduct.PetProductService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -103,5 +104,20 @@ public class PetProductServiceImpl implements PetProductService {
         PetProductVO petProductVO = new PetProductVO();
         BeanUtils.copyProperties(petProductDO, petProductVO);
         return petProductVO;
+    }
+    
+    @Override
+    public List<ProductWithStoreVO> getProductsWithStore() {
+        return petProductMapper.selectProductsWithStore();
+    }
+    
+    @Override
+    public List<ProductWithStoreVO> getProductsWithStoreByType(String productType) {
+        return petProductMapper.selectProductsWithStoreByType(productType);
+    }
+    
+    @Override
+    public List<ProductWithStoreVO> searchProductsWithStore(String keyword) {
+        return petProductMapper.searchProductsWithStore(keyword);
     }
 }

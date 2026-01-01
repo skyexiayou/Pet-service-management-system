@@ -7,6 +7,7 @@ package cn.edu.xaut.service.petproduct;
 import cn.edu.xaut.domain.entity.petproduct.PetProductDO;
 import cn.edu.xaut.domain.vo.PageResultVO;
 import cn.edu.xaut.domain.vo.petproduct.PetProductVO;
+import cn.edu.xaut.domain.vo.petproduct.ProductWithStoreVO;
 
 import java.util.List;
 
@@ -43,4 +44,24 @@ public interface PetProductService {
      * @return 分页宠物用品列表
      */
     PageResultVO<PetProductVO> getProductsByStoreId(Integer storeId, Integer pageNum, Integer pageSize);
+    
+    /**
+     * 获取所有商品（带门店信息）
+     * @return 带门店信息的商品列表
+     */
+    List<ProductWithStoreVO> getProductsWithStore();
+    
+    /**
+     * 根据类型获取商品（带门店信息）
+     * @param productType 商品类型
+     * @return 带门店信息的商品列表
+     */
+    List<ProductWithStoreVO> getProductsWithStoreByType(String productType);
+    
+    /**
+     * 搜索商品（带门店信息）
+     * @param keyword 搜索关键词
+     * @return 带门店信息的商品列表
+     */
+    List<ProductWithStoreVO> searchProductsWithStore(String keyword);
 }

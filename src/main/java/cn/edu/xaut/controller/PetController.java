@@ -75,5 +75,22 @@ public class PetController {
         return petService.getPetDetail(petId);
     }
 
+    @ApiOperation("搜索宠物")
+    @GetMapping("/search")
+    public List<PetVO> searchPets(
+            @RequestParam(value = "petName", required = false) String petName,
+            @RequestParam(value = "petId", required = false) Integer petId,
+            @RequestParam(value = "breed", required = false) String breed,
+            @RequestParam(value = "gender", required = false) String gender,
+            @RequestParam(value = "birthDateStart", required = false) String birthDateStart,
+            @RequestParam(value = "birthDateEnd", required = false) String birthDateEnd) {
+        return petService.searchPets(petName, petId, breed, gender, birthDateStart, birthDateEnd);
+    }
+
+    @ApiOperation("删除宠物")
+    @DeleteMapping("/{id}")
+    public Integer deletePet(@PathVariable("id") Integer petId) {
+        return petService.deletePet(petId);
+    }
 
 }

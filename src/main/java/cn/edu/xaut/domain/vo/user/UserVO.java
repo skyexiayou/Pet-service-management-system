@@ -22,7 +22,10 @@ public class UserVO {
     @Schema(description = "用户ID", example = "1")
     private Integer userId;
 
-    @Schema(description = "用户名", example = "user123")
+    @Schema(description = "账号", example = "user123")
+    private String account;
+
+    @Schema(description = "用户名", example = "张三")
     private String userName;
 
     @Schema(description = "联系电话", example = "13800138000")
@@ -36,4 +39,10 @@ public class UserVO {
 
     @Schema(description = "邮箱", example = "user@example.com")
     private String email;
+
+    @Schema(description = "是否为管理员：0-普通用户，1-管理员", example = "0")
+    private Integer isAdmin;
+
+    @Schema(description = "是否被封禁：0-正常，1-已封禁", example = "0")
+    private Integer isBanned;
 }

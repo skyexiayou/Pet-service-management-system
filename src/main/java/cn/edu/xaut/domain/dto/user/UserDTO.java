@@ -19,7 +19,10 @@ import jakarta.validation.constraints.NotNull;
 @Schema(description = "用户信息DTO")
 public class UserDTO {
 
-    @Schema(description = "用户名", required = true, example = "user123")
+    @Schema(description = "账号", example = "user123")
+    private String account;
+
+    @Schema(description = "用户名", required = true, example = "张三")
     @NotNull(message = "用户名不能为空")
     private String userName;
 
@@ -31,4 +34,10 @@ public class UserDTO {
 
     @Schema(description = "邮箱", example = "user@example.com")
     private String email;
+
+    @Schema(description = "是否为管理员：0-普通用户，1-管理员", example = "0")
+    private Integer isAdmin;
+
+    @Schema(description = "是否被封禁：0-正常，1-已封禁", example = "0")
+    private Integer isBanned;
 }

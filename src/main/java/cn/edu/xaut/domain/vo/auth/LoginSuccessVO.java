@@ -18,4 +18,16 @@ public class LoginSuccessVO {
 
     @Schema(description = "JWT令牌", example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
     private String token;
+    
+    @Schema(description = "用户ID", example = "1")
+    private Integer userId;
+    
+    @Schema(description = "是否为管理员：0-普通用户，1-管理员", example = "0")
+    private Integer isAdmin;
+    
+    @Schema(description = "用户名", example = "张三")
+    private String userName;
+    
+    @Schema(description = "员工ID（管理员专用）", example = "1")
+    private Integer empId;
 }

@@ -68,4 +68,9 @@ public class MedicalRecordDO implements Serializable {
     @TableField("FollowUpAdvice")
     @ApiModelProperty(value = "复诊建议", dataType = "String", example = "注意休息")
     private String followUpAdvice;
+
+    /** 状态（待就诊/已完成/已取消）- 数据库可能没有此字段，使用exist=false */
+    @TableField(value = "Status", exist = false)
+    @ApiModelProperty(value = "状态", dataType = "String", example = "待就诊")
+    private String status;
 }

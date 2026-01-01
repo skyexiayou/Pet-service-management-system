@@ -2,6 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.xaut.mapper.AdminAppointmentMapper">
 
+    <select id="selectAllAppointments" resultType="java.util.Map">
+        SELECT 
+            a.ApptID as apptId,
+            a.UserID as userId,
+            a.PetID as petId,
+            a.StoreID as storeId,
+            a.EmpID as empId,
+            a.ApptTime as apptTime,
+            a.ApptStatus as apptStatus,
+            a.CreateTime as createTime,
+            p.PetName as petName,
+            u.UserName as userName,
+            u.Phone as userPhone,
+            s.StoreName as storeName,
+            e.EmpName as empName,
+            CASE 
+                WHEN EXISTS (SELECT 1 FROM apptBeauty ab WHERE ab.ApptID = a.ApptID) THEN 'grooming'
+                WHEN EXISTS (SELECT 1 FROM apptFoster af WHERE af.ApptID = a.ApptID) THEN 'foster'
+                WHEN EXISTS (SELECT 1 FROM apptMedical am WHERE am.ApptID = a.ApptID) THEN 'medical'
+                ELSE 'unknown'
+            END as serviceType
+        FROM appointment a
+        LEFT JOIN pet p ON a.PetID = p.PetID
+        LEFT JOIN `user` u ON a.UserID = u.UserID
+        LEFT JOIN store s ON a.StoreID = s.StoreID
+        LEFT JOIN employee e ON a.EmpID = e.EmpID
+        ORDER BY a.CreateTime DESC
+    </select>
+
     <select id="selectPendingAppointments" resultType="java.util.Map">
         SELECT 
             a.ApptID as apptId,

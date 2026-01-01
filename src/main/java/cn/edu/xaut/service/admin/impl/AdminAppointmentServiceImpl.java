@@ -42,6 +42,68 @@ public class AdminAppointmentServiceImpl implements AdminAppointmentService {
     private final OrderService orderService;
 
     @Override
+    public Page<Map<String, Object>> getAllAppointments(Integer pageNum, Integer pageSize) {
+        Page<Map<String, Object>> page = new Page<>(pageNum, pageSize);
+        List<Map<String, Object>> appointments = adminAppointmentMapper.selectAllAppointments();
+        
+        // 手动分页
+        int start = (pageNum - 1) * pageSize;
+        int end = Math.min(start + pageSize, appointments.size());
+        
+        page.setTotal(appointments.size());
+        if (start < appointments.size()) {
+            page.setRecords(appointments.subList(start, end));
+        }
+        
+        return page;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateAppointment(Integer apptId, Map<String, Object> updateData) {
+        AppointmentDO appointment = appointmentMapper.selectById(apptId);
+        if (appointment == null) {
+            throw new BusinessException("预约不存在");
+        }
+        
+        // 更新字段
+        if (updateData.containsKey("apptStatus")) {
+            appointment.setApptStatus((String) updateData.get("apptStatus"));
+        }
+        if (updateData.containsKey("empId")) {
+            Object empIdObj = updateData.get("empId");
+            if (empIdObj != null) {
+                appointment.setEmpId(Integer.valueOf(empIdObj.toString()));
+            }
+        }
+        
+        appointmentMapper.updateById(appointment);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteAppointment(Integer apptId) {
+        AppointmentDO appointment = appointmentMapper.selectById(apptId);
+        if (appointment == null) {
+            throw new BusinessException("预约不存在");
+        }
+        
+        // 检查是否有关联的未支付订单，如果有则一并删除
+        LambdaQueryWrapper<OrderDO> orderWrapper = new LambdaQueryWrapper<>();
+        orderWrapper.eq(OrderDO::getApptId, apptId);
+        List<OrderDO> orders = orderMapper.selectList(orderWrapper);
+        
+        for (OrderDO order : orders) {
+            if ("已支付".equals(order.getPayStatus())) {
+                throw new BusinessException("该预约存在已支付订单，无法删除");
+            }
+            orderMapper.deleteById(order.getOrderId());
+        }
+        
+        appointmentMapper.deleteById(apptId);
+    }
+
+    @Override
     public List<Map<String, Object>> getPendingAppointments(Integer storeId) {
         return adminAppointmentMapper.selectPendingAppointments(storeId);
     }

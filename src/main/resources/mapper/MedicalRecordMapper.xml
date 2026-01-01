@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.xaut.mapper.MedicalRecordMapper">
 
+    <!-- 根据用户ID查询诊疗服务记录 -->
     <select id="selectMedicalServicesByUserId" resultType="cn.edu.xaut.domain.vo.medical.MedicalServiceVO">
         SELECT
             mr.MedicalID as medicalId,
@@ -14,10 +15,129 @@
             e.EmpName as empName,
             s.StoreName as storeName
         FROM medicalRecord mr
-        LEFT JOIN pet p ON mr.PetID = p.PetID
-        LEFT JOIN employee e ON mr.EmpID = e.EmpID
-        LEFT JOIN store s ON mr.StoreID = s.StoreID
-        LEFT JOIN apptMedical am ON mr.MedicalID = am.MedicalID
+                 LEFT JOIN pet p ON mr.PetID = p.PetID
+                 LEFT JOIN employee e ON mr.EmpID = e.EmpID
+                 LEFT JOIN store s ON mr.StoreID = s.StoreID
+                 LEFT JOIN apptMedical am ON mr.MedicalID = am.MedicalID
+        WHERE p.UserID = #{userId}
+        ORDER BY mr.MedicalTime DESC
+    </select>
+
+    <!-- 根据员工ID查询诊疗记录 -->
+    <select id="selectMedicalRecordsByEmpId" resultType="cn.edu.xaut.domain.vo.medicalrecord.MedicalRecordVO">
+        SELECT
+            mr.MedicalID as medicalId,
+            mr.PetID as petId,
+            p.PetName as petName,
+            p.Breed as breed,
+            u.UserID as userId,
+            u.UserName as userName,
+            mr.EmpID as empId,
+            e.EmpName as empName,
+            mr.StoreID as storeId,
+            s.StoreName as storeName,
+            mr.MedicalTime as medicalTime,
+            mr.Diagnosis as diagnosis,
+            mr.MedicalFee as medicalFee,
+            IFNULL(a.ApptStatus, '无预约') as status
+        FROM medicalRecord mr
+                 LEFT JOIN pet p ON mr.PetID = p.PetID
+                 LEFT JOIN user u ON p.UserID = u.UserID
+                 LEFT JOIN employee e ON mr.EmpID = e.EmpID
+                 LEFT JOIN store s ON mr.StoreID = s.StoreID
+                 LEFT JOIN apptMedical am ON mr.MedicalID = am.MedicalID
+                 LEFT JOIN appointment a ON am.ApptID = a.ApptID
+        WHERE mr.EmpID = #{empId}
+        ORDER BY mr.MedicalTime DESC
+    </select>
+
+    <!-- 查询所有诊疗记录 -->
+    <select id="selectAllMedicalRecords" resultType="cn.edu.xaut.domain.vo.medicalrecord.MedicalRecordVO">
+        SELECT
+            mr.MedicalID as medicalId,
+            mr.PetID as petId,
+            p.PetName as petName,
+            p.Breed as breed,
+            u.UserID as userId,
+            u.UserName as userName,
+            mr.EmpID as empId,
+            e.EmpName as empName,
+            mr.StoreID as storeId,
+            s.StoreName as storeName,
+            mr.MedicalTime as medicalTime,
+            mr.Diagnosis as diagnosis,
+            mr.MedicalFee as medicalFee,
+            IFNULL(a.ApptStatus, '无预约') as status
+        FROM medicalRecord mr
+                 LEFT JOIN pet p ON mr.PetID = p.PetID
+                 LEFT JOIN user u ON p.UserID = u.UserID
+                 LEFT JOIN employee e ON mr.EmpID = e.EmpID
+                 LEFT JOIN store s ON mr.StoreID = s.StoreID
+                 LEFT JOIN apptMedical am ON mr.MedicalID = am.MedicalID
+                 LEFT JOIN appointment a ON am.ApptID = a.ApptID
+        ORDER BY mr.MedicalTime DESC
+    </select>
+
+    <!-- 查询诊疗记录详情 -->
+    <select id="selectMedicalRecordDetail" resultType="cn.edu.xaut.domain.vo.medicalrecord.MedicalRecordDetailVO">
+        SELECT
+            mr.MedicalID as medicalId,
+            mr.PetID as petId,
+            p.PetName as petName,
+            p.Breed as breed,
+            p.Gender as gender,
+            p.BirthDate as birthDate,
+            u.UserID as userId,
+            u.UserName as userName,
+            u.Phone as userPhone,
+            mr.EmpID as empId,
+            e.EmpName as empName,
+            e.EmpPhone as empPhone,
+            e.Position as empPosition,
+            mr.StoreID as storeId,
+            s.StoreName as storeName,
+            s.StoreAddress as storeAddress,
+            s.StorePhone as storePhone,
+            mr.MedicalTime as medicalTime,
+            mr.Diagnosis as diagnosis,
+            mr.Medication as medication,
+            mr.MedicalFee as medicalFee,
+            mr.FollowUpAdvice as followUpAdvice,
+            IFNULL(a.ApptStatus, '无预约') as status
+        FROM medicalRecord mr
+                 LEFT JOIN pet p ON mr.PetID = p.PetID
+                 LEFT JOIN user u ON p.UserID = u.UserID
+                 LEFT JOIN employee e ON mr.EmpID = e.EmpID
+                 LEFT JOIN store s ON mr.StoreID = s.StoreID
+                 LEFT JOIN apptMedical am ON mr.MedicalID = am.MedicalID
+                 LEFT JOIN appointment a ON am.ApptID = a.ApptID
+        WHERE mr.MedicalID = #{medicalId}
+    </select>
+
+    <!-- 根据用户ID查询诊疗记录 -->
+    <select id="selectMedicalRecordsByUserId" resultType="cn.edu.xaut.domain.vo.medicalrecord.MedicalRecordVO">
+        SELECT
+            mr.MedicalID as medicalId,
+            mr.PetID as petId,
+            p.PetName as petName,
+            p.Breed as breed,
+            u.UserID as userId,
+            u.UserName as userName,
+            mr.EmpID as empId,
+            e.EmpName as empName,
+            mr.StoreID as storeId,
+            s.StoreName as storeName,
+            mr.MedicalTime as medicalTime,
+            mr.Diagnosis as diagnosis,
+            mr.MedicalFee as medicalFee,
+            IFNULL(a.ApptStatus, '无预约') as status
+        FROM medicalRecord mr
+                 LEFT JOIN pet p ON mr.PetID = p.PetID
+                 LEFT JOIN user u ON p.UserID = u.UserID
+                 LEFT JOIN employee e ON mr.EmpID = e.EmpID
+                 LEFT JOIN store s ON mr.StoreID = s.StoreID
+                 LEFT JOIN apptMedical am ON mr.MedicalID = am.MedicalID
+                 LEFT JOIN appointment a ON am.ApptID = a.ApptID
         WHERE p.UserID = #{userId}
         ORDER BY mr.MedicalTime DESC
     </select>

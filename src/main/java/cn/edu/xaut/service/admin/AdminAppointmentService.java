@@ -16,6 +16,27 @@ import java.util.Map;
 public interface AdminAppointmentService {
 
     /**
+     * 查询所有预约列表（分页）
+     * @param pageNum 页码
+     * @param pageSize 每页大小
+     * @return 预约列表
+     */
+    Page<Map<String, Object>> getAllAppointments(Integer pageNum, Integer pageSize);
+
+    /**
+     * 更新预约信息
+     * @param apptId 预约ID
+     * @param updateData 更新数据
+     */
+    void updateAppointment(Integer apptId, Map<String, Object> updateData);
+
+    /**
+     * 删除预约
+     * @param apptId 预约ID
+     */
+    void deleteAppointment(Integer apptId);
+
+    /**
      * 查询门店的待审核预约列表
      * @param storeId 门店ID
      * @return 预约列表

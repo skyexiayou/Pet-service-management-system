@@ -25,6 +25,21 @@ public class AppointmentDetailVO {
     @ApiModelProperty(value = "宠物名称")
     private String petName;
 
+    @ApiModelProperty(value = "宠物品种")
+    private String breed;
+
+    @ApiModelProperty(value = "宠物性别")
+    private String gender;
+
+    @ApiModelProperty(value = "用户ID")
+    private Integer userId;
+
+    @ApiModelProperty(value = "用户名称")
+    private String userName;
+
+    @ApiModelProperty(value = "用户电话")
+    private String userPhone;
+
     @ApiModelProperty(value = "门店ID")
     private Integer storeId;
 
@@ -44,11 +59,23 @@ public class AppointmentDetailVO {
     @ApiModelProperty(value = "预约状态")
     private String apptStatus;
 
+    @ApiModelProperty(value = "服务类型")
+    private String serviceType;
+
+    @ApiModelProperty(value = "员工ID")
+    private Integer empId;
+
     @ApiModelProperty(value = "员工姓名")
     private String empName;
 
+    @ApiModelProperty(value = "员工电话")
+    private String empPhone;
+
     @ApiModelProperty(value = "员工岗位")
     private String empPosition;
+
+    @ApiModelProperty(value = "备注")
+    private String remarks;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty(value = "创建时间")

@@ -26,17 +26,25 @@
             a.ApptID as apptId,
             a.PetID as petId,
             p.PetName as petName,
+            p.Breed as breed,
+            p.Gender as gender,
+            a.UserID as userId,
+            u.UserName as userName,
+            u.Phone as userPhone,
             a.StoreID as storeId,
             s.StoreName as storeName,
             s.StoreAddress as storeAddress,
             s.StorePhone as storePhone,
+            a.EmpID as empId,
             a.ApptTime as apptTime,
             a.ApptStatus as apptStatus,
             e.EmpName as empName,
+            e.Phone as empPhone,
             e.Position as empPosition,
             a.CreateTime as createTime
         FROM appointment a
         LEFT JOIN pet p ON a.PetID = p.PetID
+        LEFT JOIN user u ON a.UserID = u.UserID
         LEFT JOIN store s ON a.StoreID = s.StoreID
         LEFT JOIN employee e ON a.EmpID = e.EmpID
         WHERE a.ApptID = #{apptId}

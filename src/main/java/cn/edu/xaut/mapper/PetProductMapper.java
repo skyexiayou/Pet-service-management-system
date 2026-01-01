@@ -6,6 +6,7 @@ package cn.edu.xaut.mapper;
  */
 
 import cn.edu.xaut.domain.entity.petproduct.PetProductDO;
+import cn.edu.xaut.domain.vo.petproduct.ProductWithStoreVO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
@@ -41,4 +42,24 @@ public interface PetProductMapper extends BaseMapper<PetProductDO> {
      * @return 分页宠物用品列表
      */
     Page<PetProductDO> selectProductsByStoreId(Page<PetProductDO> page, @Param("storeId") Integer storeId);
+    
+    /**
+     * 查询所有商品（带门店信息）
+     * @return 带门店信息的商品列表
+     */
+    List<ProductWithStoreVO> selectProductsWithStore();
+    
+    /**
+     * 根据类型查询商品（带门店信息）
+     * @param productType 商品类型
+     * @return 带门店信息的商品列表
+     */
+    List<ProductWithStoreVO> selectProductsWithStoreByType(@Param("productType") String productType);
+    
+    /**
+     * 根据关键词搜索商品（带门店信息）
+     * @param keyword 搜索关键词
+     * @return 带门店信息的商品列表
+     */
+    List<ProductWithStoreVO> searchProductsWithStore(@Param("keyword") String keyword);
 }

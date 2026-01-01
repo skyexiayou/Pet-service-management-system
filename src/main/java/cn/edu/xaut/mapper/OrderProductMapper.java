@@ -41,4 +41,11 @@ public interface OrderProductMapper extends BaseMapper<OrderProductDO> {
      * @return 订单用品列表
      */
     List<java.util.Map<String, Object>> selectByOrderId(@Param("orderId") Integer orderId);
+    
+    /**
+     * 根据RelID统计订单数量
+     * @param relId 关联ID
+     * @return 订单数量
+     */
+    Long countByRelId(@Param("relId") Integer relId);
 }

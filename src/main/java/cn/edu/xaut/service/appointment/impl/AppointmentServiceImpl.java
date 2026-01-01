@@ -66,6 +66,9 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Autowired
     private cn.edu.xaut.mapper.StoreMapper storeMapper;
 
+    @Autowired
+    private cn.edu.xaut.mapper.OrderMapper orderMapper;
+
     /**
      * 创建多服务组合预约
      */
@@ -265,6 +268,18 @@ public class AppointmentServiceImpl implements AppointmentService {
             fosterUpdateWrapper.eq(FosterRecordDO::getFosterId, apptFoster.getFosterId())
                     .set(FosterRecordDO::getFosterStatus, "已取消");
             fosterRecordMapper.update(null, fosterUpdateWrapper);
+        }
+
+        // 6. 取消关联的未支付订单
+        if (orderMapper != null) {
+            LambdaQueryWrapper<cn.edu.xaut.domain.entity.order.OrderDO> orderWrapper = new LambdaQueryWrapper<>();
+            orderWrapper.eq(cn.edu.xaut.domain.entity.order.OrderDO::getApptId, apptId)
+                    .eq(cn.edu.xaut.domain.entity.order.OrderDO::getPayStatus, "未支付");
+            List<cn.edu.xaut.domain.entity.order.OrderDO> unpaidOrders = orderMapper.selectList(orderWrapper);
+            for (cn.edu.xaut.domain.entity.order.OrderDO order : unpaidOrders) {
+                order.setPayStatus("已取消");
+                orderMapper.updateById(order);
+            }
         }
     }
 }

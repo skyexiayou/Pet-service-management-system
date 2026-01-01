@@ -5,9 +5,12 @@ package cn.edu.xaut.controller;
  */
 
 import cn.edu.xaut.domain.entity.petproduct.PetProductDO;
+import cn.edu.xaut.domain.vo.ResponseVO;
+import cn.edu.xaut.domain.vo.petproduct.ProductWithStoreVO;
 import cn.edu.xaut.service.petproduct.PetProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,9 +29,29 @@ public class PetProductController {
     public List<PetProductDO> getAllProducts() {
         return petProductService.getAllProducts();
     }
+    
+    @ApiOperation("获取所有商品（带门店信息）")
+    @GetMapping("/with-store")
+    public ResponseVO<List<ProductWithStoreVO>> getProductsWithStore() {
+        return ResponseVO.success(petProductService.getProductsWithStore());
+    }
+    
+    @ApiOperation("根据类型获取商品（带门店信息）")
+    @GetMapping("/with-store/type/{type}")
+    public ResponseVO<List<ProductWithStoreVO>> getProductsWithStoreByType(
+            @ApiParam("商品类型") @PathVariable("type") String productType) {
+        return ResponseVO.success(petProductService.getProductsWithStoreByType(productType));
+    }
+    
+    @ApiOperation("搜索商品（带门店信息）")
+    @GetMapping("/with-store/search")
+    public ResponseVO<List<ProductWithStoreVO>> searchProductsWithStore(
+            @ApiParam("搜索关键词") @RequestParam String keyword) {
+        return ResponseVO.success(petProductService.searchProductsWithStore(keyword));
+    }
 
     @ApiOperation("根据ID获取宠物用品")
-    @GetMapping("/{id}")
+    @GetMapping("/{id:\\d+}")
     public PetProductDO getProductById(@PathVariable("id") Integer productId) {
         return petProductService.getProductById(productId);
     }
@@ -46,13 +69,13 @@ public class PetProductController {
     }
 
     @ApiOperation("更新宠物用品")
-    @PutMapping("/{id}")
+    @PutMapping("/{id:\\d+}")
     public Integer updateProduct(@PathVariable("id") Integer productId, @RequestBody PetProductDO petProduct) {
         return petProductService.updateProduct(productId, petProduct);
     }
 
     @ApiOperation("删除宠物用品")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id:\\d+}")
     public Integer deleteProduct(@PathVariable("id") Integer productId) {
         return petProductService.deleteProduct(productId);
     }
