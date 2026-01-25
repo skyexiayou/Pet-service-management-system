@@ -189,6 +189,56 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
         return petMapper.selectCount(wrapper) > 0;
     }
 
+    // ==================== 医生端新增功能 ====================
+
+    @Override
+    public PageResultVO<MedicalRecordVO> getDoctorMedicalRecords(
+            cn.edu.xaut.domain.dto.medicalrecord.DoctorMedicalRecordQueryDTO dto) {
+        Page<MedicalRecordVO> page = new Page<>(dto.getPageNum(), dto.getPageSize());
+        Page<MedicalRecordVO> result = medicalRecordMapper.selectDoctorMedicalRecords(page, dto);
+
+        return PageResultVO.<MedicalRecordVO>builder()
+                .list(result.getRecords())
+                .total(result.getTotal())
+                .pageNum(dto.getPageNum())
+                .pageSize(dto.getPageSize())
+                .build();
+    }
+
+    @Override
+    public MedicalRecordDetailVO getDoctorMedicalRecordDetail(Integer medicalId, Integer storeId) {
+        MedicalRecordDetailVO detail = medicalRecordMapper.selectDoctorMedicalRecordDetail(medicalId, storeId);
+        if (detail == null) {
+            throw new BusinessException(1001, "医疗记录不存在或无权访问");
+        }
+        return detail;
+    }
+
+    // ==================== 用户端新增功能 ====================
+
+    @Override
+    public PageResultVO<MedicalRecordVO> getUserPetMedicalRecords(
+            cn.edu.xaut.domain.dto.medicalrecord.UserMedicalRecordQueryDTO dto) {
+        Page<MedicalRecordVO> page = new Page<>(dto.getPageNum(), dto.getPageSize());
+        Page<MedicalRecordVO> result = medicalRecordMapper.selectUserPetMedicalRecords(page, dto);
+
+        return PageResultVO.<MedicalRecordVO>builder()
+                .list(result.getRecords())
+                .total(result.getTotal())
+                .pageNum(dto.getPageNum())
+                .pageSize(dto.getPageSize())
+                .build();
+    }
+
+    @Override
+    public MedicalRecordDetailVO getUserMedicalRecordDetail(Integer medicalId, Integer userId) {
+        MedicalRecordDetailVO detail = medicalRecordMapper.selectUserMedicalRecordDetail(medicalId, userId);
+        if (detail == null) {
+            throw new BusinessException(1001, "医疗记录不存在或无权访问");
+        }
+        return detail;
+    }
+
     // ==================== 私有方法 ====================
 
     private void validateForeignKeys(Integer petId, Integer empId, Integer storeId) {

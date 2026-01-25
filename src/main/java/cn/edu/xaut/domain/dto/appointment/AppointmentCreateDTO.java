@@ -32,11 +32,6 @@ public class AppointmentCreateDTO {
     @ApiModelProperty(value = "员工ID（可选）", example = "1")
     private Integer empId;
 
-    @ApiModelProperty(value = "美容服务ID列表（可选）", example = "[1, 3]")
-    private List<Integer> beautyIds;
-
-    @ApiModelProperty(value = "寄养服务参数（可选）")
-    private FosterParamDTO fosterParam;
 
     @ApiModelProperty(value = "医疗服务参数（可选）")
     private MedicalParamDTO medicalParam;

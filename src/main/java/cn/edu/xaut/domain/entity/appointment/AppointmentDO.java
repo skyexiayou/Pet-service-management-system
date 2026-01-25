@@ -62,4 +62,14 @@ public class AppointmentDO implements Serializable {
     @TableField("CreateTime")
     @ApiModelProperty(value = "创建时间", dataType = "Date", example = "2023-01-01 10:00:00")
     private Date createTime;
+
+    /** 诊断状态（待诊断/已诊断/已取消） */
+    @TableField("DiagnoseStatus")
+    @ApiModelProperty(value = "诊断状态", dataType = "String", example = "待诊断")
+    private String diagnoseStatus;
+
+    /** 诊断描述 */
+    @TableField("DiagnoseDesc")
+    @ApiModelProperty(value = "诊断描述", dataType = "String", example = "宠物精神状态良好")
+    private String diagnoseDesc;
 }

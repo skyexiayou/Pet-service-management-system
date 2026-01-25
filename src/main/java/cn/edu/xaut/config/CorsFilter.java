@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 /**
- * CORS¹ıÂËÆ÷ - È·±£ËùÓĞÇëÇó£¨°üÀ¨OPTIONSÔ¤¼ìÇëÇó£©¶¼ÄÜÕıÈ·´¦Àí¿çÓò
+ * CORSè¿‡æ»¤å™¨ - ç¡®ä¿æ‰€æœ‰è¯·æ±‚ï¼ˆåŒ…æ‹¬OPTIONSé¢„æ£€è¯·æ±‚ï¼‰éƒ½èƒ½æ­£ç¡®å¤„ç†è·¨åŸŸ
  */
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -23,14 +23,13 @@ public class CorsFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) res;
         HttpServletRequest request = (HttpServletRequest) req;
         
-        // ÉèÖÃCORSÏìÓ¦Í·
+        // è®¾ç½®CORSå“åº”å¤´
         response.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept, X-Requested-With");
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Max-Age", "3600");
-        
-        // ¶ÔÓÚOPTIONSÔ¤¼ìÇëÇó£¬Ö±½Ó·µ»Ø200
+
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
             return;
@@ -41,11 +40,11 @@ public class CorsFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        // ³õÊ¼»¯
+        // åˆå§‹åŒ–
     }
 
     @Override
     public void destroy() {
-        // Ïú»Ù
+        // é”€æ¯
     }
 }

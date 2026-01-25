@@ -26,8 +26,6 @@ import java.util.stream.Collectors;
 
 /**
  * 宠物业务层实现类
- * 实现PetService接口，处理宠物信息的查询（基础/详情）、分页、新增、修改等核心业务逻辑，
- * 包含宠物信息脱敏、服务记录关联、DO/VO转换等特殊处理
  * @date 2025-12-18
  */
 @Service

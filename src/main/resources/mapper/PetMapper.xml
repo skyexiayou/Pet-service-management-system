@@ -1,25 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.xaut.mapper.PetMapper">
     <!-- Select all service records by pet ID -->
     <select id="selectPetServiceRecords" parameterType="java.lang.Integer" resultType="java.util.Map">
-        SELECT
-            appt.ApptID AS appointmentId,
-            appt.ApptTime AS serviceDate,
-            appt.ApptTime AS serviceTime,
-            appt.ApptStatus AS status,
-            'Beauty' AS serviceType,
-            b.BeautyName AS serviceName,
-            b.Price AS price
-        FROM
-            appointment appt
-        LEFT JOIN apptbeauty ab ON appt.ApptID = ab.ApptID
-        LEFT JOIN beauty b ON ab.BeautyID = b.BeautyID
-        WHERE
-            appt.PetID = #{petId}
-        
-        UNION ALL
-        
         SELECT
             appt.ApptID AS appointmentId,
             mr.MedicalTime AS serviceDate,
@@ -34,24 +17,6 @@
         LEFT JOIN medicalRecord mr ON am.MedicalID = mr.MedicalID
         WHERE
             appt.PetID = #{petId}
-        
-        UNION ALL
-        
-        SELECT
-            appt.ApptID AS appointmentId,
-            fr.StartDate AS serviceDate,
-            fr.StartDate AS serviceTime,
-            appt.ApptStatus AS status,
-            'Boarding' AS serviceType,
-            'Boarding Service' AS serviceName,
-            fr.FosterFee AS price
-        FROM
-            appointment appt
-        LEFT JOIN apptFoster af ON appt.ApptID = af.ApptID
-        LEFT JOIN fosterRecord fr ON af.FosterID = fr.FosterID
-        WHERE
-            appt.PetID = #{petId}
-        
         ORDER BY
             serviceDate DESC, serviceTime DESC
     </select>
@@ -66,7 +31,9 @@
             Gender as gender,
             BirthDate as birthDate,
             VaccineStatus as vaccineStatus,
-            Remarks as remarks
+            Remarks as remarks,
+            AllergyDrug as allergyDrug,
+            MedicalHistory as medicalHistory
         FROM pet
         WHERE UserID = #{userId}
         ORDER BY PetID

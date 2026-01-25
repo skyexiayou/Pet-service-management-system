@@ -1,10 +1,7 @@
 package cn.edu.xaut.service.store;
 
-import cn.edu.xaut.domain.dto.store.StoreDTO;
 import cn.edu.xaut.domain.vo.PageResultVO;
-import cn.edu.xaut.domain.vo.StoreVO;
-
-import java.util.List;
+import cn.edu.xaut.domain.vo.store.StoreVO;
 
 /**
  * 门店服务接口

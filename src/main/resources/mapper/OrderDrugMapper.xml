@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.xaut.mapper.OrderDrugMapper">
+
+
+    <resultMap id="BaseResultMap" type="cn.edu.xaut.domain.entity.order.OrderDrugDO">
+        <id column="RelID" property="relId"/>
+        <result column="OrderID" property="orderId"/>
+        <result column="DrugID" property="drugId"/>
+        <result column="DrugName" property="drugName"/>
+        <result column="DrugSpec" property="drugSpec"/>
+        <result column="UnitPrice" property="price"/>
+        <result column="DrugNum" property="quantity"/>
+        <result column="Subtotal" property="amount"/>
+        <!-- <result column="IsPrescription" property="isPrescription"/> order_drug表无此字段，petdrug可能有DrugType -->
+    </resultMap>
+
+
+    <select id="selectByOrderId" resultMap="BaseResultMap">
+        SELECT 
+            od.RelID, od.OrderID, od.DrugID, od.DrugNum, od.UnitPrice, od.Subtotal,
+            pd.DrugName, pd.DrugSpec
+        FROM order_drug od
+        LEFT JOIN petdrug pd ON od.DrugID = pd.DrugID
+        WHERE od.OrderID = #{orderId}
+    </select>
+
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO order_drug (OrderID, DrugID, DrugNum, UnitPrice, Subtotal)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.orderId}, #{item.drugId}, #{item.quantity}, #{item.price}, #{item.amount})
+        </foreach>
+    </insert>
+
+
+    <delete id="deleteByOrderId">
+        DELETE FROM order_drug WHERE OrderID = #{orderId}
+    </delete>
+
+</mapper>

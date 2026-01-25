@@ -1,11 +1,8 @@
 package cn.edu.xaut.utils;
 
-import cn.edu.xaut.domain.entity.leaverecord.LeaveRecordDO;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 时间校验工具类
@@ -47,31 +44,6 @@ public class TimeValidationUtil {
         } catch (ParseException e) {
             return false;
         }
-    }
-
-    /**
-     * 校验员工是否在指定时间段内请假
-     *
-     * @param empId        员工ID
-     * @param apptTime     预约时间
-     * @param leaveRecords 请假记录列表
-     * @return true=请假中，false=未请假
-     */
-    public static boolean isEmployeeOnLeave(Integer empId, Date apptTime, List<LeaveRecordDO> leaveRecords) {
-        if (empId == null || apptTime == null || leaveRecords == null || leaveRecords.isEmpty()) {
-            return false;
-        }
-
-        for (LeaveRecordDO record : leaveRecords) {
-            if (record.getEmpId().equals(empId) &&
-                    "已通过".equals(record.getApproveStatus()) &&
-                    !apptTime.before(record.getStartTime()) &&
-                    !apptTime.after(record.getEndTime())) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**

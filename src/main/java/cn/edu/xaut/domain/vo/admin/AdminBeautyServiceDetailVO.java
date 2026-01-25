@@ -1,6 +1,5 @@
 package cn.edu.xaut.domain.vo.admin;
 
-import cn.edu.xaut.domain.vo.appointment.BeautyDetailVO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -8,7 +7,6 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 管理员美容服务记录详情VO
@@ -75,8 +73,6 @@ public class AdminBeautyServiceDetailVO {
     @ApiModelProperty(value = "备注")
     private String remarks;
 
-    @ApiModelProperty(value = "美容服务明细列表")
-    private List<BeautyDetailVO> beautyDetails;
 
     @ApiModelProperty(value = "总价格")
     private BigDecimal totalPrice;

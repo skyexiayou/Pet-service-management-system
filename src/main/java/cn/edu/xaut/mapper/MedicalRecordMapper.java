@@ -57,4 +57,28 @@ public interface MedicalRecordMapper extends BaseMapper<MedicalRecordDO> {
      * @return 医疗记录列表
      */
     List<MedicalRecordVO> selectMedicalRecordsByUserId(@Param("userId") Integer userId);
+
+    /**
+     * 医生端-条件查询医疗记录
+     */
+    Page<MedicalRecordVO> selectDoctorMedicalRecords(Page<MedicalRecordVO> page,
+            @Param("dto") cn.edu.xaut.domain.dto.medicalrecord.DoctorMedicalRecordQueryDTO dto);
+
+    /**
+     * 医生端-查询详情（带门店校验）
+     */
+    MedicalRecordDetailVO selectDoctorMedicalRecordDetail(@Param("medicalId") Integer medicalId,
+            @Param("storeId") Integer storeId);
+
+    /**
+     * 用户端-查询指定宠物的诊疗记录
+     */
+    Page<MedicalRecordVO> selectUserPetMedicalRecords(Page<MedicalRecordVO> page,
+            @Param("dto") cn.edu.xaut.domain.dto.medicalrecord.UserMedicalRecordQueryDTO dto);
+
+    /**
+     * 用户端-查询详情（带用户校验）
+     */
+    MedicalRecordDetailVO selectUserMedicalRecordDetail(@Param("medicalId") Integer medicalId,
+            @Param("userId") Integer userId);
 }

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.xaut.mapper.PetOrderMapper">
+    <resultMap id="BaseResultMap" type="cn.edu.xaut.domain.entity.order.PetOrderDO">
+        <id column="OrderID" property="orderId"/>
+        <result column="OrderNo" property="orderNo"/>
+        <result column="UserID" property="userId"/>
+        <result column="PetID" property="petId"/>
+        <result column="StoreID" property="storeId"/>
+        <result column="prescription_id" property="prescriptionId"/>
+        <result column="OrderType" property="orderType"/>
+        <result column="OrderStatus" property="orderStatus"/>
+        <result column="TotalAmount" property="totalAmount"/>
+        <result column="CreateTime" property="createTime"/>
+        <result column="Remark" property="remark"/>
+    </resultMap>
+
+    <resultMap id="DetailResultMap" type="cn.edu.xaut.domain.entity.order.PetOrderDO" extends="BaseResultMap">
+        <result column="UserName" property="userName"/>
+        <result column="PetName" property="petName"/>
+        <result column="StoreName" property="storeName"/>
+        <result column="PrescriptionNo" property="prescriptionNo"/>
+    </resultMap>
+
+    <select id="selectByUserId" resultMap="DetailResultMap">
+        SELECT o.*, u.UserName, p.PetName, s.StoreName, pr.PrescriptionNo
+        FROM pet_order o
+        LEFT JOIN user u ON o.UserID = u.UserID
+        LEFT JOIN pet p ON o.PetID = p.PetID
+        LEFT JOIN store s ON o.StoreID = s.StoreID
+        LEFT JOIN petmedicalprescription pr ON o.prescription_id = pr.PrescriptionID
+        WHERE o.UserID = #{userId}
+        ORDER BY o.OrderID ASC
+    </select>
+
+    <select id="selectDetailById" resultMap="DetailResultMap">
+        SELECT o.*, u.UserName, p.PetName, s.StoreName, pr.PrescriptionNo
+        FROM pet_order o
+        LEFT JOIN user u ON o.UserID = u.UserID
+        LEFT JOIN pet p ON o.PetID = p.PetID
+        LEFT JOIN store s ON o.StoreID = s.StoreID
+        LEFT JOIN petmedicalprescription pr ON o.prescription_id = pr.PrescriptionID
+        WHERE o.OrderID = #{orderId}
+    </select>
+
+    <select id="selectByPrescriptionId" resultMap="BaseResultMap">
+        SELECT * FROM pet_order WHERE prescription_id = #{prescriptionId}
+    </select>
+    
+    <select id="selectAllOrders" resultMap="DetailResultMap">
+        SELECT o.*, u.UserName, p.PetName, s.StoreName, pr.PrescriptionNo
+        FROM pet_order o
+        LEFT JOIN user u ON o.UserID = u.UserID
+        LEFT JOIN pet p ON o.PetID = p.PetID
+        LEFT JOIN store s ON o.StoreID = s.StoreID
+        LEFT JOIN petmedicalprescription pr ON o.prescription_id = pr.PrescriptionID
+        ORDER BY o.OrderID ASC
+    </select>
+    
+    <select id="selectByOrderStatus" resultMap="DetailResultMap">
+        SELECT o.*, u.UserName, p.PetName, s.StoreName, pr.PrescriptionNo
+        FROM pet_order o
+        LEFT JOIN user u ON o.UserID = u.UserID
+        LEFT JOIN pet p ON o.PetID = p.PetID
+        LEFT JOIN store s ON o.StoreID = s.StoreID
+        LEFT JOIN petmedicalprescription pr ON o.prescription_id = pr.PrescriptionID
+        WHERE o.OrderStatus = #{orderStatus}
+        ORDER BY o.OrderID ASC
+    </select>
+    
+    <select id="selectOrderListByStoreId" resultType="java.util.Map">
+        SELECT o.OrderID, o.OrderNo, u.UserName, p.PetName, o.OrderStatus, o.TotalAmount, o.CreateTime, o.prescription_id,
+               pay.PayType as payType, pay.PayTime as payTime
+        FROM pet_order o
+        LEFT JOIN user u ON o.UserID = u.UserID
+        LEFT JOIN pet p ON o.PetID = p.PetID
+        LEFT JOIN payment_record pay ON o.OrderID = pay.OrderID
+        WHERE 1=1
+        <if test="storeId != null">
+            AND o.StoreID = #{storeId}
+        </if>
+        <if test="orderStatus != null and orderStatus != ''">
+            AND o.OrderStatus = #{orderStatus}
+        </if>
+        ORDER BY o.OrderID ASC
+        LIMIT #{offset}, #{limit}
+    </select>
+    
+    <select id="selectOrderCountByStoreId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM pet_order o
+        WHERE 1=1
+        <if test="storeId != null">
+            AND o.StoreID = #{storeId}
+        </if>
+        <if test="orderStatus != null and orderStatus != ''">
+            AND o.OrderStatus = #{orderStatus}
+        </if>
+    </select>
+    
+    <select id="selectByOrderNo" resultMap="BaseResultMap">
+        SELECT * FROM pet_order WHERE OrderNo = #{orderNo}
+    </select>
+</mapper>

@@ -21,9 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Tag(name = "验证码管理", description = "验证码生成相关接口")
 public class CaptchaController {
-
     private final CaptchaService captchaService;
-
     @Operation(summary = "获取验证码", description = "生成验证码图片和令牌")
     @GetMapping("/captcha")
     public ResponseVO<CaptchaVO> generateCaptcha() {

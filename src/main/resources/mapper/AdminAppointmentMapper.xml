@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.xaut.mapper.AdminAppointmentMapper">
 
@@ -11,18 +11,16 @@
             a.EmpID as empId,
             a.ApptTime as apptTime,
             a.ApptStatus as apptStatus,
+            a.DiagnoseStatus as diagnoseStatus,
+            a.DiagnoseDesc as diagnoseDesc,
             a.CreateTime as createTime,
             p.PetName as petName,
+            p.Breed as breed,
+            p.Gender as gender,
             u.UserName as userName,
             u.Phone as userPhone,
             s.StoreName as storeName,
-            e.EmpName as empName,
-            CASE 
-                WHEN EXISTS (SELECT 1 FROM apptBeauty ab WHERE ab.ApptID = a.ApptID) THEN 'grooming'
-                WHEN EXISTS (SELECT 1 FROM apptFoster af WHERE af.ApptID = a.ApptID) THEN 'foster'
-                WHEN EXISTS (SELECT 1 FROM apptMedical am WHERE am.ApptID = a.ApptID) THEN 'medical'
-                ELSE 'unknown'
-            END as serviceType
+            e.EmpName as empName
         FROM appointment a
         LEFT JOIN pet p ON a.PetID = p.PetID
         LEFT JOIN `user` u ON a.UserID = u.UserID
@@ -44,7 +42,7 @@
         INNER JOIN pet p ON a.PetID = p.PetID
         INNER JOIN `user` u ON a.UserID = u.UserID
         WHERE a.StoreID = #{storeId}
-          AND a.ApptStatus = '待服务'
+          AND a.ApptStatus = '待处理'
         ORDER BY a.CreateTime DESC
     </select>
 
@@ -80,21 +78,17 @@
     <select id="selectStoreOrders" resultType="java.util.Map">
         SELECT 
             o.OrderID as orderId,
-            o.ApptID as apptId,
             o.TotalAmount as totalAmount,
-            o.PayStatus as payStatus,
-            o.PayMethod as payMethod,
-            o.PayTime as payTime,
-            o.OrderCreateTime as orderCreateTime,
+            o.OrderStatus as orderStatus,
+            o.CreateTime as createTime,
             u.UserName as userName,
             u.Phone as userPhone,
             p.PetName as petName
-        FROM `order` o
-        INNER JOIN appointment a ON o.ApptID = a.ApptID
-        INNER JOIN pet p ON a.PetID = p.PetID
-        INNER JOIN `user` u ON a.UserID = u.UserID
-        WHERE a.StoreID = #{storeId}
-        ORDER BY o.OrderCreateTime DESC
+        FROM pet_order o
+        LEFT JOIN pet p ON o.PetID = p.PetID
+        LEFT JOIN `user` u ON o.UserID = u.UserID
+        WHERE o.StoreID = #{storeId}
+        ORDER BY o.CreateTime DESC
     </select>
 
 </mapper>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.xaut.mapper.PaymentRecordMapper">
+    <resultMap id="BaseResultMap" type="cn.edu.xaut.domain.entity.payment.PaymentRecordDO">
+        <id column="PaymentID" property="paymentId"/>
+        <result column="OrderID" property="orderId"/>
+        <result column="PayNo" property="payNo"/>
+        <result column="PayType" property="payType"/>
+        <result column="PayAmount" property="payAmount"/>
+        <result column="PayStatus" property="payStatus"/>
+        <result column="PayTime" property="payTime"/>
+        <result column="RefundTime" property="refundTime"/>
+        <result column="Remark" property="remark"/>
+    </resultMap>
+
+    <resultMap id="DetailResultMap" type="cn.edu.xaut.domain.entity.payment.PaymentRecordDO" extends="BaseResultMap">
+        <result column="OrderNo" property="orderNo"/>
+    </resultMap>
+
+    <select id="selectByOrderId" resultMap="DetailResultMap">
+        SELECT pr.*, o.OrderNo
+        FROM payment_record pr
+        INNER JOIN pet_order o ON pr.OrderID = o.OrderID
+        WHERE pr.OrderID = #{orderId}
+        ORDER BY pr.PayTime DESC
+        LIMIT 1
+    </select>
+
+    <select id="selectByPayNo" resultMap="BaseResultMap">
+        SELECT * FROM payment_record WHERE PayNo = #{payNo}
+    </select>
+
+    <select id="selectListByOrderId" resultMap="DetailResultMap">
+        SELECT pr.*, o.OrderNo
+        FROM payment_record pr
+        INNER JOIN pet_order o ON pr.OrderID = o.OrderID
+        WHERE pr.OrderID = #{orderId}
+        ORDER BY pr.PayTime DESC
+    </select>
+
+    <select id="selectByPayStatus" resultMap="BaseResultMap">
+        SELECT * FROM payment_record WHERE PayStatus = #{payStatus}
+        ORDER BY PayTime DESC
+    </select>
+</mapper>

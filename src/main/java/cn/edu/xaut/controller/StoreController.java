@@ -1,7 +1,7 @@
 package cn.edu.xaut.controller;
 
 import cn.edu.xaut.domain.vo.PageResultVO;
-import cn.edu.xaut.domain.vo.StoreVO;
+import cn.edu.xaut.domain.vo.store.StoreVO;
 import cn.edu.xaut.service.store.StoreService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

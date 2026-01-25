@@ -51,6 +51,18 @@ public class MedicalRecordDTO {
     @ApiModelProperty(value = "复诊建议", example = "一周后复查")
     private String followUpAdvice;
 
+    @ApiModelProperty(value = "处方ID", example = "1")
+    private Integer prescriptionId;
+
+    @ApiModelProperty(value = "药品费用", example = "100.00")
+    private BigDecimal drugTotalPrice;
+
+    @ApiModelProperty(value = "用药说明", example = "每日两次，每次一片")
+    private String drugUsage;
+
+    @ApiModelProperty(value = "用药禁忌", example = "避免与XX药物同时使用")
+    private String drugTaboo;
+
     @ApiModelProperty(value = "状态（待就诊/已完成/已取消）- 注意：数据库可能不支持此字段", example = "待就诊")
     private String status;
 }

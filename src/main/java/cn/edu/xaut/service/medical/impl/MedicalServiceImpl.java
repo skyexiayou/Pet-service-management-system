@@ -21,15 +21,11 @@ import java.util.List;
 @Service
 public class MedicalServiceImpl implements MedicalService {
 
-    /** 宠物医疗数据访问层接口，负责医疗相关数据库操作 */
     @Autowired
     private MedicalMapper medicalMapper;
 
     /**
      * 根据医疗ID查询单个宠物医疗信息
-     *
-     * @param medicalId 医疗ID（主键）
-     * @return 宠物医疗信息实体类
      */
     @Override
     public MedicalDO getMedicalById(Integer medicalId) {
@@ -38,9 +34,6 @@ public class MedicalServiceImpl implements MedicalService {
 
     /**
      * 根据医疗类型查询宠物医疗信息列表
-     *
-     * @param medicalType 医疗类型（如：疫苗接种、疾病治疗、体检）
-     * @return 符合条件的宠物医疗信息列表
      */
     @Override
     public List<MedicalDO> getMedicalsByType(String medicalType) {
@@ -49,8 +42,6 @@ public class MedicalServiceImpl implements MedicalService {
 
     /**
      * 查询所有宠物医疗信息
-     *
-     * @return 全部宠物医疗信息列表
      */
     @Override
     public List<MedicalDO> getAllMedicals() {
@@ -59,11 +50,6 @@ public class MedicalServiceImpl implements MedicalService {
 
     /**
      * 分页查询所有宠物医疗信息
-     * 基于MyBatis-Plus内置分页插件实现自动分页
-     *
-     * @param pageNum  当前页码（从1开始）
-     * @param pageSize 每页显示条数
-     * @return 分页结果VO（包含总条数、当前页数据、页码/页大小）
      */
     @Override
     public PageResultVO<MedicalDO> getMedicalsPage(Integer pageNum, Integer pageSize) {
@@ -79,12 +65,6 @@ public class MedicalServiceImpl implements MedicalService {
 
     /**
      * 根据医疗类型分页查询宠物医疗信息
-     * 先查询全量数据再手动分页（适用于数据量较小的场景）
-     *
-     * @param medicalType 医疗类型（如：疫苗接种、疾病治疗、体检）
-     * @param pageNum     当前页码（从1开始）
-     * @param pageSize    每页显示条数
-     * @return 分页结果VO（包含总条数、当前页数据、页码/页大小）
      */
     @Override
     public PageResultVO<MedicalDO> getMedicalsByTypePage(String medicalType, Integer pageNum, Integer pageSize) {
@@ -104,10 +84,6 @@ public class MedicalServiceImpl implements MedicalService {
 
     /**
      * 新增宠物医疗信息
-     * 将前端传入的DTO转换为DO后插入数据库
-     *
-     * @param medicalDTO 宠物医疗信息入参DTO（前端传入的新增数据）
-     * @return 受影响的行数（1=新增成功，0=新增失败）
      */
     @Override
     public Integer createMedical(MedicalDTO medicalDTO) {
@@ -118,11 +94,6 @@ public class MedicalServiceImpl implements MedicalService {
 
     /**
      * 修改宠物医疗信息
-     * 根据医疗ID更新对应信息，DTO转换为DO后执行更新
-     *
-     * @param medicalId  医疗ID（主键，指定要修改的记录）
-     * @param medicalDTO 宠物医疗信息入参DTO（前端传入的修改数据）
-     * @return 受影响的行数（1=修改成功，0=修改失败/无数据更新）
      */
     @Override
     public Integer updateMedical(Integer medicalId, MedicalDTO medicalDTO) {
@@ -134,10 +105,6 @@ public class MedicalServiceImpl implements MedicalService {
 
     /**
      * 删除宠物医疗信息
-     * 根据医疗ID删除对应记录（物理删除）
-     *
-     * @param medicalId 医疗ID（主键，指定要删除的记录）
-     * @return 受影响的行数（1=删除成功，0=删除失败/无此记录）
      */
     @Override
     public Integer deleteMedical(Integer medicalId) {

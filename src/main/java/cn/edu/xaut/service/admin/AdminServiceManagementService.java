@@ -1,6 +1,5 @@
 package cn.edu.xaut.service.admin;
 
-import cn.edu.xaut.domain.dto.admin.FosterDailyUpdateDTO;
 import cn.edu.xaut.domain.dto.admin.MedicalRecordCreateDTO;
 
 /**
@@ -8,21 +7,6 @@ import cn.edu.xaut.domain.dto.admin.MedicalRecordCreateDTO;
  * 创建时间：2025-12-18
  */
 public interface AdminServiceManagementService {
-
-    /**
-     * 完成美容服务
-     * @param apptId 预约ID
-     * @param storeId 门店ID
-     */
-    void completeBeautyService(Integer apptId, Integer storeId);
-
-    /**
-     * 更新寄养每日状态
-     * @param fosterId 寄养ID
-     * @param updateDTO 更新信息
-     * @param storeId 门店ID
-     */
-    void updateFosterDailyStatus(Integer fosterId, FosterDailyUpdateDTO updateDTO, Integer storeId);
 
     /**
      * 创建医疗记录

@@ -41,4 +41,15 @@ public interface AppointmentService {
      * @param apptId 预约ID
      */
     void cancelAppointment(Integer apptId);
+
+    /**
+     * 获取待诊断预约列表
+     *
+     * @param storeId 门店ID
+     * @param keyword 搜索关键词
+     * @param pageNum 页码
+     * @param pageSize 每页条数
+     * @return 待诊断预约列表
+     */
+    List<AppointmentDetailVO> getWaitDiagnoseAppointments(Integer storeId, String keyword, Integer pageNum, Integer pageSize);
 }

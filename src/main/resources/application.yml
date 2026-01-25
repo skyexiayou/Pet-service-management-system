@@ -1,12 +1,17 @@
 spring:
   application:
-    name: PetServiceManagement
+    name: PetMedicineServiceManagement
   
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/pet_service_management?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://localhost:3306/pet_medical_management?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&useSSL=false
     username: root
     password: 123456
+  
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 
 server:
   port: 8081
@@ -26,15 +31,15 @@ knife4j:
     enableDocumentManage: true
     enableVersion: true
   document:
-    title: 宠物服务管理系统API
-    description: 宠物服务管理系统的OpenAPI接口文档
+    title: 宠物合规处方用药及医药服务管理系统API
+    description: 宠物合规处方用药及医药服务管理系统OpenAPI接口文档
     version: 1.0.0
     license: Apache License 2.0
     licenseUrl: http://www.apache.org/licenses/LICENSE-2.0
     contact:
-      name: 数据库冲冲冲团队
+      name: 夏优的小队
       url: http://localhost:8081
-      email: api@example.com
+      email: 845103811@qq.com
 
 # JWT配置
 jwt:

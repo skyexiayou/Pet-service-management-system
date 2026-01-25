@@ -54,6 +54,11 @@ public class MedicalRecordDO implements Serializable {
     @ApiModelProperty(value = "诊断结果", dataType = "String", example = "感冒")
     private String diagnosis;
 
+    /** 病情描述 */
+    @TableField("DiagnoseDesc")
+    @ApiModelProperty(value = "病情描述", dataType = "String", example = "宠物出现咳嗽、流鼻涕等症状")
+    private String diagnoseDesc;
+
     /** 用药情况 */
     @TableField("Medication")
     @ApiModelProperty(value = "用药情况", dataType = "String", example = "阿莫西林")
@@ -69,7 +74,27 @@ public class MedicalRecordDO implements Serializable {
     @ApiModelProperty(value = "复诊建议", dataType = "String", example = "注意休息")
     private String followUpAdvice;
 
-    /** 状态（待就诊/已完成/已取消）- 数据库可能没有此字段，使用exist=false */
+    /** 处方ID */
+    @TableField("PrescriptionID")
+    @ApiModelProperty(value = "处方ID", dataType = "Integer", example = "1")
+    private Integer prescriptionId;
+
+    /** 药品费用 */
+    @TableField("DrugTotalPrice")
+    @ApiModelProperty(value = "药品费用", dataType = "BigDecimal", example = "100.00")
+    private BigDecimal drugTotalPrice;
+
+    /** 用药说明 */
+    @TableField("DrugUsage")
+    @ApiModelProperty(value = "用药说明", dataType = "String", example = "每日两次，每次一片")
+    private String drugUsage;
+
+    /** 用药禁忌 */
+    @TableField("DrugTaboo")
+    @ApiModelProperty(value = "用药禁忌", dataType = "String", example = "避免与XX药物同时使用")
+    private String drugTaboo;
+
+    /** 状态（待就诊/已完成/已取消） */
     @TableField(value = "Status", exist = false)
     @ApiModelProperty(value = "状态", dataType = "String", example = "待就诊")
     private String status;

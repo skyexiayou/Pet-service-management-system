@@ -21,6 +21,9 @@ public class MedicalRecordVO {
     @ApiModelProperty(value = "医疗记录ID", example = "1")
     private Integer medicalId;
 
+    @ApiModelProperty(value = "关联预约ID", example = "1")
+    private Integer apptId;
+
     @ApiModelProperty(value = "宠物ID", example = "1")
     private Integer petId;
 
@@ -56,6 +59,18 @@ public class MedicalRecordVO {
 
     @ApiModelProperty(value = "医疗费用", example = "200.00")
     private BigDecimal medicalFee;
+
+    @ApiModelProperty(value = "处方ID", example = "1")
+    private Integer prescriptionId;
+
+    @ApiModelProperty(value = "药品费用", example = "100.00")
+    private BigDecimal drugTotalPrice;
+
+    @ApiModelProperty(value = "用药说明", example = "每日两次，每次一片")
+    private String drugUsage;
+
+    @ApiModelProperty(value = "用药禁忌", example = "避免与XX药物同时使用")
+    private String drugTaboo;
 
     @ApiModelProperty(value = "状态", example = "已完成")
     private String status;

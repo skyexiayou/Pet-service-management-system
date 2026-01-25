@@ -1,14 +1,11 @@
 package cn.edu.xaut.service.admin.impl;
 
-import cn.edu.xaut.domain.dto.admin.FosterDailyUpdateDTO;
 import cn.edu.xaut.domain.dto.admin.MedicalRecordCreateDTO;
 import cn.edu.xaut.domain.entity.appointment.AppointmentDO;
-import cn.edu.xaut.domain.entity.fosterrecord.FosterRecordDO;
 import cn.edu.xaut.domain.entity.medicalrecord.MedicalRecordDO;
 import cn.edu.xaut.exception.BusinessException;
 import cn.edu.xaut.mapper.AppointmentMapper;
 import cn.edu.xaut.mapper.ApptMedicalMapper;
-import cn.edu.xaut.mapper.FosterRecordMapper;
 import cn.edu.xaut.mapper.MedicalRecordMapper;
 import cn.edu.xaut.service.admin.AdminServiceManagementService;
 import lombok.RequiredArgsConstructor;
@@ -26,62 +23,8 @@ import java.util.Date;
 public class AdminServiceManagementServiceImpl implements AdminServiceManagementService {
 
     private final AppointmentMapper appointmentMapper;
-    private final FosterRecordMapper fosterRecordMapper;
     private final MedicalRecordMapper medicalRecordMapper;
     private final ApptMedicalMapper apptMedicalMapper;
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void completeBeautyService(Integer apptId, Integer storeId) {
-        // 查询预约信息
-        AppointmentDO appointment = appointmentMapper.selectById(apptId);
-        if (appointment == null) {
-            throw new BusinessException("预约不存在");
-        }
-
-        // 验证门店权限
-        if (!appointment.getStoreId().equals(storeId)) {
-            throw new BusinessException("无权限操作其他门店的预约");
-        }
-
-        // 验证预约状态
-        if (!"待服务".equals(appointment.getApptStatus())) {
-            throw new BusinessException("预约状态不是'待服务'，无法完成服务");
-        }
-
-        // 更新预约状态为已完成
-        appointment.setApptStatus("已完成");
-        appointmentMapper.updateById(appointment);
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void updateFosterDailyStatus(Integer fosterId, FosterDailyUpdateDTO updateDTO, Integer storeId) {
-        // 查询寄养记录
-        FosterRecordDO fosterRecord = fosterRecordMapper.selectById(fosterId);
-        if (fosterRecord == null) {
-            throw new BusinessException("寄养记录不存在");
-        }
-
-        // 验证门店权限
-        if (!fosterRecord.getStoreId().equals(storeId)) {
-            throw new BusinessException("无权限操作其他门店的寄养记录");
-        }
-
-        // 验证寄养状态
-        if (!"进行中".equals(fosterRecord.getFosterStatus())) {
-            throw new BusinessException("寄养状态不是'进行中'，无法更新");
-        }
-
-        // 追加每日状态（格式：原有内容\n新内容）
-        String currentStatus = fosterRecord.getDailyStatus();
-        String newStatus = currentStatus == null || currentStatus.trim().isEmpty() 
-            ? updateDTO.getDailyStatus() 
-            : currentStatus + "\n" + updateDTO.getDailyStatus();
-        
-        fosterRecord.setDailyStatus(newStatus);
-        fosterRecordMapper.updateById(fosterRecord);
-    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)

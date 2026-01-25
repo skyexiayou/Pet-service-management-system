@@ -1,7 +1,6 @@
 package cn.edu.xaut.controller.admin;
 
 import cn.edu.xaut.domain.dto.admin.AppointmentReviewDTO;
-import cn.edu.xaut.domain.dto.admin.OrderRefundDTO;
 import cn.edu.xaut.domain.dto.admin.StatisticsQueryDTO;
 import cn.edu.xaut.domain.dto.appointment.AppointmentCreateDTO;
 import cn.edu.xaut.domain.vo.ResponseVO;
@@ -22,12 +21,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 管理员预约订单管理Controller
+ * 管理员预约管理Controller
  * 创建时间：2025-12-18
  */
 @RestController
 @RequestMapping("/api/admin/appointments")
-@Api(tags = "管理员-预约订单管理")
+@Api(tags = "管理员-预约管理")
 @RequiredArgsConstructor
 public class AdminAppointmentController {
 
@@ -90,32 +89,6 @@ public class AdminAppointmentController {
         
         Integer storeId = adminAuthUtil.getAdminStoreId(userName, phone);
         adminAppointmentService.reviewAppointment(apptId, reviewDTO, storeId);
-        return ResponseVO.success(null);
-    }
-
-    @GetMapping("/orders")
-    @ApiOperation(value = "查询门店订单列表", notes = "分页查询当前门店的所有订单")
-    public ResponseVO<Page<Map<String, Object>>> getStoreOrders(
-            @ApiParam(value = "管理员用户名", example = "管理员张三") @RequestParam(required = false) String userName,
-            @ApiParam(value = "管理员手机号", example = "13900000001") @RequestParam(required = false) String phone,
-            @ApiParam(value = "页码", example = "1") @RequestParam(defaultValue = "1") Integer pageNum,
-            @ApiParam(value = "每页大小", example = "10") @RequestParam(defaultValue = "10") Integer pageSize) {
-        
-        Integer storeId = adminAuthUtil.getAdminStoreId(userName, phone);
-        Page<Map<String, Object>> orders = adminAppointmentService.getStoreOrders(storeId, pageNum, pageSize);
-        return ResponseVO.success(orders);
-    }
-
-    @PutMapping("/orders/{orderId}/refund")
-    @ApiOperation(value = "订单退款", notes = "对已支付订单进行退款，退款后自动恢复用品库存，预约状态更新为已取消")
-    public ResponseVO<Void> refundOrder(
-            @ApiParam(value = "订单ID", required = true, example = "1") @PathVariable Integer orderId,
-            @ApiParam(value = "退款信息", required = true) @Valid @RequestBody OrderRefundDTO refundDTO,
-            @ApiParam(value = "管理员用户名", example = "管理员张三") @RequestParam(required = false) String userName,
-            @ApiParam(value = "管理员手机号", example = "13900000001") @RequestParam(required = false) String phone) {
-        
-        Integer storeId = adminAuthUtil.getAdminStoreId(userName, phone);
-        adminAppointmentService.refundOrder(orderId, refundDTO, storeId);
         return ResponseVO.success(null);
     }
 

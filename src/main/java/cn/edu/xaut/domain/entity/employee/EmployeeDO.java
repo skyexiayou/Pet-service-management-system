@@ -41,7 +41,7 @@ public class EmployeeDO implements Serializable {
 
     /** 职位 */
     @TableField("Position")
-    @ApiModelProperty(value = "职位", dataType = "String", example = "美容师")
+    @ApiModelProperty(value = "职位", dataType = "String", example = "医生")
     private String position;
 
     /** 员工手机号 */

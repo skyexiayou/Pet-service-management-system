@@ -31,6 +31,22 @@ public class AppointmentDetailVO {
     @ApiModelProperty(value = "宠物性别")
     private String gender;
 
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @ApiModelProperty(value = "宠物出生日期")
+    private Date birthDate;
+
+    @ApiModelProperty(value = "宠物年龄")
+    private Integer petAge;
+
+    @ApiModelProperty(value = "过敏药物")
+    private String allergyDrug;
+
+    @ApiModelProperty(value = "既往病史")
+    private String medicalHistory;
+
+    @ApiModelProperty(value = "疫苗接种情况")
+    private String vaccineStatus;
+
     @ApiModelProperty(value = "用户ID")
     private Integer userId;
 
@@ -59,8 +75,11 @@ public class AppointmentDetailVO {
     @ApiModelProperty(value = "预约状态")
     private String apptStatus;
 
-    @ApiModelProperty(value = "服务类型")
-    private String serviceType;
+    @ApiModelProperty(value = "诊断状态")
+    private String diagnoseStatus;
+
+    @ApiModelProperty(value = "诊断描述")
+    private String diagnoseDesc;
 
     @ApiModelProperty(value = "员工ID")
     private Integer empId;
@@ -74,6 +93,9 @@ public class AppointmentDetailVO {
     @ApiModelProperty(value = "员工岗位")
     private String empPosition;
 
+    @ApiModelProperty(value = "服务类型")
+    private String serviceType;
+
     @ApiModelProperty(value = "备注")
     private String remarks;
 
@@ -82,12 +104,6 @@ public class AppointmentDetailVO {
     private Date createTime;
 
     // 服务明细
-    @ApiModelProperty(value = "美容服务明细")
-    private List<BeautyDetailVO> beautyServices;
-
-    @ApiModelProperty(value = "寄养服务明细")
-    private FosterDetailVO fosterService;
-
     @ApiModelProperty(value = "医疗服务明细")
     private MedicalDetailVO medicalService;
 }

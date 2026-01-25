@@ -44,6 +44,12 @@ public class PetDetailVO {
     @Schema(description = "宠物多媒体文件路径")
     private String petMediaPath;
 
+    @Schema(description = "宠物过敏药物")
+    private String allergyDrug;
+
+    @Schema(description = "既往病史")
+    private String medicalHistory;
+
     @Schema(description = "用户ID", example = "1")
     private Integer userId;
 

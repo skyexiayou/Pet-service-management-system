@@ -10,7 +10,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.example</groupId>
-    <artifactId>PetServiceManagement</artifactId>
+    <artifactId>PetMedicineService</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>PetServiceManagement</name>
     <description>宠物服务管理系统</description>
@@ -31,6 +31,8 @@
         <java.version>17</java.version>
         <!-- 统一管理Knife4j版本（适配Spring Boot 3.x） -->
         <knife4j.version>4.4.0</knife4j.version>
+        <!-- Lombok版本 -->
+        <lombok.version>1.18.26</lombok.version>
     </properties>
     <dependencies>
         <dependency>
@@ -79,7 +81,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <optional>true</optional>
         </dependency>
 
         <!-- 4. 移除springdoc依赖（和Knife4j冲突，Knife4j已包含Swagger功能） -->

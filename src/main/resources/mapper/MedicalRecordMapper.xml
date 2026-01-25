@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.xaut.mapper.MedicalRecordMapper">
 
@@ -140,6 +140,96 @@
                  LEFT JOIN appointment a ON am.ApptID = a.ApptID
         WHERE p.UserID = #{userId}
         ORDER BY mr.MedicalTime DESC
+    </select>
+
+    <!-- 医生端-条件查询医疗记录 -->
+    <select id="selectDoctorMedicalRecords" resultType="cn.edu.xaut.domain.vo.medicalrecord.MedicalRecordVO">
+        SELECT
+        mr.MedicalID as medicalId,
+        mr.PetID as petId,
+        p.PetName as petName,
+        p.Breed as breed,
+        u.UserID as userId,
+        u.UserName as userName,
+        a.ApptID as apptId,
+        mr.MedicalTime as medicalTime,
+        mr.MedicalFee as medicalFee,
+        mr.Diagnosis as diagnosis,
+        mr.StoreID as storeId,
+        s.StoreName as storeName
+        FROM medicalRecord mr
+        LEFT JOIN pet p ON mr.PetID = p.PetID
+        LEFT JOIN user u ON p.UserID = u.UserID
+        LEFT JOIN store s ON mr.StoreID = s.StoreID
+        LEFT JOIN apptMedical am ON mr.MedicalID = am.MedicalID
+        LEFT JOIN appointment a ON am.ApptID = a.ApptID
+        WHERE 1=1
+        <if test="dto.petName != null and dto.petName != ''">
+            AND p.PetName LIKE CONCAT('%', #{dto.petName}, '%')
+        </if>
+        <if test="dto.startTime != null and dto.startTime != ''">
+            AND mr.MedicalTime >= #{dto.startTime}
+        </if>
+        <if test="dto.endTime != null and dto.endTime != ''">
+            AND mr.MedicalTime &lt;= #{dto.endTime}
+        </if>
+        ORDER BY mr.MedicalID ASC
+    </select>
+
+    <!-- 医生端-查询详情 -->
+    <select id="selectDoctorMedicalRecordDetail" resultType="cn.edu.xaut.domain.vo.medicalrecord.MedicalRecordDetailVO">
+        SELECT
+        mr.MedicalID as medicalId,
+        mr.PetID as petId,
+        p.PetName as petName,
+        p.Breed as breed,
+        mr.MedicalTime as medicalTime,
+        mr.Diagnosis as diagnosis,
+        mr.Medication as medication,
+        mr.FollowUpAdvice as followUpAdvice,
+        mr.PrescriptionID as prescriptionId,
+        pres.PrescriptionNo as prescriptionNo,
+        mr.MedicalFee as medicalFee,
+        mr.StoreID as storeId,
+        s.StoreName as storeName
+        FROM medicalRecord mr
+        LEFT JOIN pet p ON mr.PetID = p.PetID
+        LEFT JOIN store s ON mr.StoreID = s.StoreID
+        LEFT JOIN petmedicalprescription pres ON mr.PrescriptionID = pres.PrescriptionID
+        WHERE mr.MedicalID = #{medicalId}
+    </select>
+
+    <!-- 用户端-查询指定宠物的诊疗记录 -->
+    <select id="selectUserPetMedicalRecords" resultType="cn.edu.xaut.domain.vo.medicalrecord.MedicalRecordVO">
+        SELECT
+        mr.MedicalID as medicalId,
+        mr.PetID as petId,
+        p.PetName as petName,
+        p.Breed as breed,
+        mr.MedicalTime as medicalTime,
+        mr.MedicalFee as medicalFee,
+        mr.Diagnosis as diagnosis
+        FROM medicalRecord mr
+        LEFT JOIN pet p ON mr.PetID = p.PetID
+        WHERE p.UserID = #{dto.userId}
+        <if test="dto.petId != null">
+            AND mr.PetID = #{dto.petId}
+        </if>
+        ORDER BY mr.MedicalTime DESC
+    </select>
+
+    <!-- 用户端-查询详情（带用户校验） -->
+    <select id="selectUserMedicalRecordDetail" resultType="cn.edu.xaut.domain.vo.medicalrecord.MedicalRecordDetailVO">
+        SELECT
+        mr.MedicalID as medicalId,
+        mr.MedicalTime as medicalTime,
+        mr.Diagnosis as diagnosis,
+        mr.Medication as medication,
+        mr.FollowUpAdvice as followUpAdvice,
+        mr.MedicalFee as medicalFee
+        FROM medicalRecord mr
+        LEFT JOIN pet p ON mr.PetID = p.PetID
+        WHERE mr.MedicalID = #{medicalId} AND p.UserID = #{userId}
     </select>
 
 </mapper>

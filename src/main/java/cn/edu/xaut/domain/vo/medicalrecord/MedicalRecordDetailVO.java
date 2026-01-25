@@ -89,6 +89,21 @@ public class MedicalRecordDetailVO {
     @ApiModelProperty(value = "复诊建议", example = "一周后复查")
     private String followUpAdvice;
 
+    @ApiModelProperty(value = "处方ID", example = "1")
+    private Integer prescriptionId;
+
+    @ApiModelProperty(value = "处方编号", example = "PRE20240601001")
+    private String prescriptionNo;
+
+    @ApiModelProperty(value = "药品费用", example = "100.00")
+    private BigDecimal drugTotalPrice;
+
+    @ApiModelProperty(value = "用药说明", example = "每日两次，每次一片")
+    private String drugUsage;
+
+    @ApiModelProperty(value = "用药禁忌", example = "避免与XX药物同时使用")
+    private String drugTaboo;
+
     @ApiModelProperty(value = "状态", example = "已完成")
     private String status;
 }

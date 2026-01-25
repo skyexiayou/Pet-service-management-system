@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface MedicalRecordService {
 
-    // ==================== 管理员功能 ====================
+    // 管理员功能
 
     /**
      * 获取当前管理员负责的医疗记录（分页）
@@ -90,4 +90,26 @@ public interface MedicalRecordService {
      * @return 是否有宠物
      */
     boolean checkUserHasPets(Integer userId);
+
+    /**
+     * 医生端-分页查询医疗记录（带筛选）
+     */
+    PageResultVO<MedicalRecordVO> getDoctorMedicalRecords(
+            cn.edu.xaut.domain.dto.medicalrecord.DoctorMedicalRecordQueryDTO dto);
+
+    /**
+     * 医生端-查询详情
+     */
+    MedicalRecordDetailVO getDoctorMedicalRecordDetail(Integer medicalId, Integer storeId);
+
+    /**
+     * 用户端-分页查询指定宠物诊疗记录
+     */
+    PageResultVO<MedicalRecordVO> getUserPetMedicalRecords(
+            cn.edu.xaut.domain.dto.medicalrecord.UserMedicalRecordQueryDTO dto);
+
+    /**
+     * 用户端-查询详情（带权限校验）
+     */
+    MedicalRecordDetailVO getUserMedicalRecordDetail(Integer medicalId, Integer userId);
 }

@@ -13,6 +13,30 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     /**
+     * 处理订单业务异常
+     */
+    @ExceptionHandler(OrderException.class)
+    public ResponseVO<Void> handleOrderException(OrderException e) {
+        return ResponseVO.error(e.getCode(), e.getMessage());
+    }
+
+    /**
+     * 处理支付业务异常
+     */
+    @ExceptionHandler(PaymentException.class)
+    public ResponseVO<Void> handlePaymentException(PaymentException e) {
+        return ResponseVO.error(e.getCode(), e.getMessage());
+    }
+
+    /**
+     * 处理库存业务异常
+     */
+    @ExceptionHandler(StockException.class)
+    public ResponseVO<Void> handleStockException(StockException e) {
+        return ResponseVO.error(e.getCode(), e.getMessage());
+    }
+
+    /**
      * 处理业务异常
      */
     @ExceptionHandler(BusinessException.class)

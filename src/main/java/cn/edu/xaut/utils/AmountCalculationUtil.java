@@ -12,11 +12,7 @@ public class AmountCalculationUtil {
     /**
      * 计算订单总金额
      * 累加美容费、寄养费、医疗费、商品费，最终保留2位小数（四舍五入）
-     *
-     * @param beautyFee 美容费
-     * @param fosterFee 寄养费
      * @param medicalFee 医疗费
-     * @param productFee 商品费
      * @return 订单总金额（保留2位小数）
      */
     public static BigDecimal calculateTotalAmount(

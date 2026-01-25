@@ -21,7 +21,7 @@ public class Knife4jConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("宠物服务管理系统API文档")
-                        .description("宠物服务管理系统的RESTful API接口文档，包含宠物档案、美容服务、医疗服务、寄养服务、门店管理和宠物用品等模块")
+                        .description("宠物服务管理系统的RESTful API接口文档")
                         .version("1.0.0")
                         .contact(new Contact()
                                 .name("宠物服务管理系统开发团队")

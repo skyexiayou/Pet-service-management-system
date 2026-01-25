@@ -56,4 +56,36 @@ public class MedicalRecordController {
         boolean hasPets = medicalRecordService.checkUserHasPets(userId);
         return ResponseVO.success(hasPets);
     }
+
+    // ==================== 新增接口 ====================
+
+    @ApiOperation("医生端-医疗记录列表查询")
+    @GetMapping("/doctor/list")
+    public ResponseVO<cn.edu.xaut.domain.vo.PageResultVO<MedicalRecordVO>> getDoctorMedicalRecordList(
+            @Validated cn.edu.xaut.domain.dto.medicalrecord.DoctorMedicalRecordQueryDTO dto) {
+        return ResponseVO.success(medicalRecordService.getDoctorMedicalRecords(dto));
+    }
+
+    @ApiOperation("医生端-医疗记录详情查询")
+    @GetMapping("/doctor/detail")
+    public ResponseVO<MedicalRecordDetailVO> getDoctorMedicalRecordDetail(
+            @RequestParam Integer medicalId,
+            @RequestParam Integer storeId) { // 必须传入storeId校验权限
+        return ResponseVO.success(medicalRecordService.getDoctorMedicalRecordDetail(medicalId, storeId));
+    }
+
+    @ApiOperation("用户端-医疗记录列表查询")
+    @GetMapping("/user/list")
+    public ResponseVO<cn.edu.xaut.domain.vo.PageResultVO<MedicalRecordVO>> getUserMedicalRecordList(
+            @Validated cn.edu.xaut.domain.dto.medicalrecord.UserMedicalRecordQueryDTO dto) {
+        return ResponseVO.success(medicalRecordService.getUserPetMedicalRecords(dto));
+    }
+
+    @ApiOperation("用户端-医疗记录详情查询")
+    @GetMapping("/user/detail")
+    public ResponseVO<MedicalRecordDetailVO> getUserMedicalRecordDetail(
+            @RequestParam Integer medicalId,
+            @RequestParam Integer userId) {
+        return ResponseVO.success(medicalRecordService.getUserMedicalRecordDetail(medicalId, userId));
+    }
 }

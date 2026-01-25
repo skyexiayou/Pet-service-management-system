@@ -62,4 +62,14 @@ public class PetDO implements Serializable {
     @TableField("Remarks")
     @ApiModelProperty(value = "备注", dataType = "String", example = "对花粉过敏")
     private String remarks;
+
+    /** 宠物过敏药物 */
+    @TableField("AllergyDrug")
+    @ApiModelProperty(value = "宠物过敏药物", dataType = "String", example = "青霉素")
+    private String allergyDrug;
+
+    /** 既往病史 */
+    @TableField("MedicalHistory")
+    @ApiModelProperty(value = "既往病史", dataType = "String", example = "曾患皮肤病")
+    private String medicalHistory;
 }

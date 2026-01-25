@@ -2,7 +2,7 @@ package cn.edu.xaut.service.store.impl;
 
 import cn.edu.xaut.domain.entity.store.StoreDO;
 import cn.edu.xaut.domain.vo.PageResultVO;
-import cn.edu.xaut.domain.vo.StoreVO;
+import cn.edu.xaut.domain.vo.store.StoreVO;
 import cn.edu.xaut.mapper.StoreMapper;
 import cn.edu.xaut.service.store.StoreService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
